@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/indexRecruit/indexRecruit",
+    "pages/makeFriends/makeFriends",
+    "pages/meSkill/meSkill",
+    "pages/supplier/supplier",
+    "pages/investor/investor",
+    "pages/borrower/borrower",
+    "pages/wantDetail/wantDetail",
+    "pages/postWant/postWant",
+    "pages/postRecruit/postRecruit",
+    "pages/postJob/postJob",
+    "pages/postPersonal/postPersonal",
+    "pages/postCompany/postCompany",
+    "pages/posTinvestor/posTinvestor",
+    "pages/postStock/postStock",
+    "pages/postMakeFri/postMakeFri",
+    "pages/postSupplier/postSupplier",
+    "pages/postLoan/postLoan",
+    "pages/postProject/postProject",
+    "pages/supplierDetail/supplierDetail",
+    "pages/jobDetail/jobDetail",
+    "pages/investorDetail/investorDetail",
+    "pages/companyDetailSkill/companyDetailSkill",
+    "pages/personalDetailSkill/personalDetailSkill",
+    "pages/borrowerDetail/borrowerDetail",
+    "pages/stock/stock",
+    "pages/stockDetail/stockDetail",
+    "pages/goodProject/goodProject",
+    "pages/goodProjectDetail/goodProjectDetail",
+    "pages/makeFriDetail/makeFriDetail",
+    "pages/recruitDetail/recruitDetail"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {}
+}

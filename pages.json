@@ -1,0 +1,196 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path": "pages/indexRecruit/indexRecruit",
+			"style": {
+				"navigationBarTitleText": "招聘/兼职"
+			}
+		},
+		{
+			"path": "pages/makeFriends/makeFriends",
+			"style": {
+				"navigationBarTitleText": "相亲/交友"
+			}
+		},
+		{
+			"path": "pages/meSkill/meSkill",
+			"style": {
+				"navigationBarTitleText": "我有技能"
+			}
+		},
+		{
+			"path": "pages/supplier/supplier",
+			"style": {
+				"navigationBarTitleText": "找供货商"
+			}
+		},
+		{
+			"path": "pages/investor/investor",
+			"style": {
+				"navigationBarTitleText": "找投资人"
+			}
+		},
+		{
+			"path": "pages/borrower/borrower",
+			"style": {
+				"navigationBarTitleText": "找借款人"
+			}
+		},
+		{
+			"path": "pages/wantDetail/wantDetail",
+			"style": {
+				"navigationBarTitleText": "求购详情"
+			}
+		},
+		{
+			"path": "pages/postWant/postWant",
+			"style": {
+				"navigationBarTitleText": "发布求购信息"
+			}
+		},
+		{
+			"path": "pages/postRecruit/postRecruit",
+			"style": {
+				"navigationBarTitleText": "发布招聘信息"
+			}
+		},
+		{
+			"path": "pages/postJob/postJob",
+			"style": {
+				"navigationBarTitleText": "发布求职信息"
+			}
+		},
+		{
+			"path": "pages/postPersonal/postPersonal",
+			"style": {
+				"navigationBarTitleText": "发布个人信息"
+			}
+		},
+		{
+			"path": "pages/postCompany/postCompany",
+			"style": {
+				"navigationBarTitleText": "发布公司信息"
+			}
+		},
+		{
+			"path": "pages/posTinvestor/posTinvestor",
+			"style": {
+				"navigationBarTitleText": "发布投资人"
+			}
+		},
+		{
+			"path": "pages/postStock/postStock",
+			"style": {
+				"navigationBarTitleText": "发布股权/投资"
+			}
+		},
+		{
+			"path": "pages/postMakeFri/postMakeFri",
+			"style": {
+				"navigationBarTitleText": "发布相亲/交友信息"
+			}
+		},
+		{
+			"path": "pages/postSupplier/postSupplier",
+			"style": {
+				"navigationBarTitleText": "发布供货商"
+			}
+		},
+		{
+			"path": "pages/postLoan/postLoan",
+			"style": {
+				"navigationBarTitleText": "发布借款人"
+			}
+		},
+		{
+			"path": "pages/postProject/postProject",
+			"style": {
+				"navigationBarTitleText": "发布项目"
+			}
+		},
+		{
+			"path": "pages/supplierDetail/supplierDetail",
+			"style": {
+				"navigationBarTitleText": "供货商详情"
+			}
+		},
+		{
+			"path": "pages/jobDetail/jobDetail",
+			"style": {
+				"navigationBarTitleText": "求职详情"
+			}
+		},
+		{
+			"path": "pages/investorDetail/investorDetail",
+			"style": {
+				"navigationBarTitleText": "投资人详情"
+			}
+		},
+		{
+			"path": "pages/companyDetailSkill/companyDetailSkill",
+			"style": {
+				"navigationBarTitleText": "公司详情"
+			}
+		},
+		{
+			"path": "pages/personalDetailSkill/personalDetailSkill",
+			"style": {
+				"navigationBarTitleText": "个人详情"
+			}
+		},
+		{
+			"path": "pages/borrowerDetail/borrowerDetail",
+			"style": {
+				"navigationBarTitleText": "借款详情"
+			}
+		},
+		{
+			"path": "pages/stock/stock",
+			"style": {
+				"navigationBarTitleText": "找股权投资"
+			}
+		},
+		{
+			"path": "pages/stockDetail/stockDetail",
+			"style": {
+				"navigationBarTitleText": "股权/投资详情"
+			}
+		},
+		{
+			"path": "pages/goodProject/goodProject",
+			"style": {
+				"navigationBarTitleText": "好项目招商加盟"
+			}
+		},
+		{
+			"path": "pages/goodProjectDetail/goodProjectDetail",
+			"style": {
+				"navigationBarTitleText": "好项目详情"
+			}
+		},
+		{
+			"path": "pages/makeFriDetail/makeFriDetail",
+			"style": {
+				"navigationBarTitleText": "个人信息"
+			}
+		},
+		{
+			"path": "pages/recruitDetail/recruitDetail",
+			"style": {
+				"navigationBarTitleText": "招聘详情"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}
