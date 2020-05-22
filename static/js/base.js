@@ -20,10 +20,11 @@ class Base {
 		return uni.request({
 			url: e.url,
 			data: Object.assign({
-				msg_id: store.state.user.id
+				// msg_id: store.state.user.id
 			}, e.data),
 			header: e.header || {
 				'content-type': 'application/x-www-form-urlencoded',
+				Authorization: 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93d3cubHhnLmNjXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNTkwMDQ3NjgyLCJleHAiOjE1OTAyNjM2ODIsIm5iZiI6MTU5MDA0NzY4MiwianRpIjoiZlU3RmVSNUdGN0hJd2VDRSIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.L3kOAqFDhZ_h7o4drTFduaPjb3HIYP7HR41hvgNJaiE'
 			},
 			method: e.type || "POST",
 			dataType: e.dataType || "json",

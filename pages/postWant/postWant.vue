@@ -3,95 +3,95 @@
 		<view class="form">
 			<view class="item">
 				<label>采购产品</label>
-				<input type="text" value="" placeholder="请填写采购产品名称" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写采购产品名称" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>采购数量</label>
-				<input type="text" value="" placeholder="请填写采购数量" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写采购数量" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>产品规格</label>
-				<input type="text" value="" placeholder="请填写产品规格" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写产品规格" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>项目名称*</label>
-				<input type="text" value="" placeholder="请填写项目名称*" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写项目名称*" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>项目地址</label>
-				<input type="text" value="" placeholder="请填写项目地址" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写项目地址" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>预算金额</label>
-				<input type="number" value="" placeholder="请填写预算金额" placeholder-class="placeholderSty" />
+				<input type="number" value="" data-name="author" @input="getSetData" placeholder="请填写预算金额" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>结款方式</label>
-				<view class="radioGroup"> 
-					<block v-for="(item,index) in selList" :key='index'>
+				<view class="radioGroup">
+					<block v-for="(item, index) in selList" :key="index">
 						<view class="" @tap="pay(index)">
-							<image :src="isCheckState==index?iconsel: iconNosel" class="section" :class="isCheckState==index?iconsel: iconNosel" ></image>
-							<text>{{item.name}}</text>
+							<image :src="isCheckState == index ? iconsel : iconNosel" class="section" :class="isCheckState == index ? iconsel : iconNosel"></image>
+							<text>{{ item.name }}</text>
 						</view>
 					</block>
-				 </view>
+				</view>
 			</view>
 			<view class="item">
 				<label>采购期限</label>
-				<view class="radioGroup"> 
-					<block v-for="(item,index) in selList" :key='index'>
+				<view class="radioGroup">
+					<block v-for="(item, index) in selList" :key="index">
 						<view class="" @tap="buyType(index)">
-							<image :src="isbuyType==index?iconsel: iconNosel" class="section" :class="isbuyType==index?iconsel: iconNosel" ></image>
-							<text>{{item.name}}</text>
+							<image :src="isbuyType == index ? iconsel : iconNosel" class="section" :class="isbuyType == index ? iconsel : iconNosel"></image>
+							<text>{{ item.name }}</text>
 						</view>
 					</block>
-				 </view>
+				</view>
 			</view>
 			<view class="item" style="align-items: flex-start;">
 				<label>产品描述</label>
-				<textarea class="textarea" value="" placeholder="请填写采购产品描述信息" placeholder-class="placeholderSty"/>
+				<textarea class="textarea" value="" placeholder="请填写采购产品描述信息" placeholder-class="placeholderSty" />
 			</view>
-			<view class="item">
+			<view class="item" style="align-items: flex-start;">
 				<label>上传图片</label>
 				<view class="imgList">
-					<image src="../../static/img/img3.png" mode=""></image>
+					<image :src="item" mode="" v-for="(item, index) in images" :key="index"></image>
+					<image src="../../static/img/img3.png" mode="" @tap="uploadImg" v-if="images.length < 9"></image>
 				</view>
 			</view>
-			
 		</view>
 		<view class="form five">
 			<view class="item">
 				<label>供货商地区</label>
-				<input type="text" value="" placeholder="请填写供货商地区" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写供货商地区" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>供货商品牌</label>
-				<input type="text" value="" placeholder="请填写供货商品牌" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写供货商品牌" placeholder-class="placeholderSty" />
 			</view>
 		</view>
 		<view class="form five" style="margin-bottom: 90upx;">
 			<view class="item">
 				<label>采购人单位</label>
-				<input type="text" value="" placeholder="请填写采购人单位" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写采购人单位" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>采购人姓名</label>
-				<input type="text" value="" placeholder="请填写采购人姓名" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写采购人姓名" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>采购人电话</label>
-				<input type="number" value="" placeholder="请填写采购人电话" placeholder-class="placeholderSty" />
+				<input type="number" value="" data-name="author" @input="getSetData" placeholder="请填写采购人电话" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>是否紧急</label>
-				<view class="radioGroup"> 
-					<block v-for="(item,index) in urgentList" :key='index'>
+				<view class="radioGroup">
+					<block v-for="(item, index) in urgentList" :key="index">
 						<view class="" @tap="urgentType(index)">
-							<image :src="isUrgent==index?iconsel: iconNosel" class="section" :class="isUrgent==index?iconsel: iconNosel" ></image>
-							<text>{{item.name}}</text>
+							<image :src="isUrgent == index ? iconsel : iconNosel" class="section" :class="isUrgent == index ? iconsel : iconNosel"></image>
+							<text>{{ item.name }}</text>
 						</view>
 					</block>
-				 </view>
+				</view>
 			</view>
 		</view>
 		<view class="btn" @tap="submit">发布</view>
@@ -99,37 +99,109 @@
 </template>
 
 <script>
+import { login, ajax, formatDate } from '@/static/js/base.js';
+import api from '@/static/js/api.js';
 export default {
 	data() {
 		return {
+			formNode: {
+				
+			},
+			URL: '',
+			IMG_URL: '',
 			isCheckState: 0,
 			isbuyType: 0,
 			isUrgent: 0,
-			selList:[
-				{name: '现金'},
-				{name: '分期'},
-			],
-			buyList:[
-				{name: '单次采购'},
-				{name: '长期采购'},
-			],
-			urgentList:[
-				{name: '紧急'},
-				{name: '非紧急'},
-			],
-			iconsel: "../../static/img/img1.png",
-			iconNosel: "../../static/img/img2.png",
+			selList: [{ name: '现金' }, { name: '分期' }],
+			buyList: [{ name: '单次采购' }, { name: '长期采购' }],
+			urgentList: [{ name: '紧急' }, { name: '非紧急' }],
+			iconsel: '../../static/img/img1.png',
+			iconNosel: '../../static/img/img2.png',
+			images: [], // 仅用于上传
+			imagesShow: [] // 仅用于显示
 		};
 	},
+	onLoad(options) {
+		const that = this;
+		that.options = options;
+		that.URL = api.URL;
+		that.IMG_URL = api.IMG_URL;
+	},
 	methods: {
-		pay(e){
-			this.isCheckState = e
+		// 表单数据获取
+		getSetData(e) {
+			let formNode = this.formNode;
+			let name = e.currentTarget.dataset.name;
+			let value = e.detail.value;
+			formNode[name] = value;
+			this.formNode = formNode;
+			this.$apply();
 		},
-		buyType(e){
-			this.isbuyType = e
+		pay(e) {
+			this.isCheckState = e;
 		},
-		urgentType(e){
-			this.isUrgent = e
+		buyType(e) {
+			this.isbuyType = e;
+		},
+		urgentType(e) {
+			this.isUrgent = e;
+		},
+		uploadImg() {
+			const that = this;
+			let count = 9 - that.images.length;
+			wx.chooseImage({
+				count: count,
+				sizeType: ['original', 'compressed'],
+				sourceType: ['album', 'camera'],
+				success: res => {
+					uni.showToast({
+						title: '图片上传中',
+						icon: 'loading'
+					});
+					Promise.all(
+						res.tempFiles.map(item => {
+							return new Promise((resolve, reject) => {
+								console.log(item);
+								if (item.size > 10000000) {
+									// if (item.size > 500) {
+									uni.showToast({
+										title: '上传图片不能大于5兆',
+										icon: 'none',
+										duration: 2000
+									});
+								} else {
+									uni.uploadFile({
+										url: api.home_upload_img,
+										filePath: item.path,
+										name: 'image',
+										header: {
+											// Authorization: this.$parent.globalData.token
+										},
+										success: res => {
+											resolve({
+												path: JSON.parse(res.data).data
+											});
+										}
+									});
+								}
+							});
+						})
+					)
+						.then(e => {
+							uni.hideToast();
+							console.log(e);
+							let imageShow = that.imagesShow;
+							let image = that.images;
+							for (let i = 0; i < e.length; i++) {
+								imageShow.push(`${that.IMG_URL}/${e[i].path}`);
+								image.push(e[i].path);
+							}
+							that.imagesShow = imageShow;
+							that.images = image;
+						})
+						.catch(err => console.log(err));
+				}
+			});
 		}
 	}
 };
@@ -177,25 +249,24 @@ page {
 			color: #898989;
 			font-size: 24upx;
 		}
-		.radioGroup{
+		.radioGroup {
 			width: 540upx;
 			display: flex;
 			justify-content: flex-start;
-			view{
+			view {
 				display: flex;
 				align-items: center;
 				margin-right: 50upx;
-				image{
+				image {
 					width: 36upx;
 					height: 36upx;
 					border-radius: 50%;
 					margin-right: 10upx;
-					
 				}
 			}
 			// background-color: #007AFF;
 		}
-		.textarea{
+		.textarea {
 			width: 520upx;
 			border: 1upx solid #dddddd;
 			border-radius: 6upx;
@@ -204,15 +275,20 @@ page {
 			font-size: 24upx;
 			height: 200upx;
 		}
-		.imgList{
+		.imgList {
 			width: 540upx;
 			display: flex;
-			image{
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			flex-direction: row;
+			flex-wrap: wrap;
+			image {
 				width: 134upx;
 				height: 134upx;
 				// background-color: #007AFF;
-				margin-right: 10upx;
-				
+				margin-right: 47upx;
+				margin-bottom: 30upx;
 			}
 		}
 	}

@@ -15,7 +15,7 @@ Vue.mixin({
 	...MescrollMixin,
 	data(){
 		return {
-			URL: require('./static/js/api.js').URL
+			IMG_URL: require('./static/js/api.js').IMG_URL
 		}
 	},
 	// onShareAppMessage(t) {

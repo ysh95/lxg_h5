@@ -98,6 +98,7 @@
 		line-height: 90upx;
 		text-align: center;
 		font-weight: bold;
+		z-index: 99;
 	}
 	.line{
 		width: 750upx;

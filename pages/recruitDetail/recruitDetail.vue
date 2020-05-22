@@ -2,48 +2,41 @@
 	<view class="recruit">
 		<view class="content">
 			<view class="info">
-				<text class="title">UI设计师</text>
-				<text class="center">西安 | 5-10年工作经验 | 统招本科</text>
-				<text class="money">15k-25k</text>
+				<text class="title">{{info.post_name}}</text>
+				<text class="center">{{info.post_address}} | {{info.post_experience}}  | {{info.post_education}} </text>
+				<text class="money">{{info.post_salary}}</text>
 			</view>
 			<view class="item">
-				<image src="../../static/logo.png" mode=""></image>
+				<image :src="IMG_URL+info.hr_avatar" mode=""></image>
 				<view>
-					<text>阿里巴巴集团</text>
-					<text>移动互联网·B轮·0-99人</text>
+					<view style="display: flex;">
+						<text>{{info.hr_name}}</text>
+						<text style="margin-left: 20upx;">{{info.hr_mobile}}</text>
+					</view>
+					<text>{{info.hr_post}}</text>
 				</view>
 			</view>
 			<view class="info">
 				<text class="title">职位详情</text>
 				<view>
-					<text>岗位职责：</text>
+					<!-- <text>岗位职责：</text> -->
 					<view class="">
 						<text class="">
-							1.jdgjsfdnlkdfj
-							2.司法解释拉倒吧
-						</text>
-					</view>
-				</view>
-				<view>
-					<text>任职要求：</text>
-					<view class="">
-						<text class="">
-							1.jdgjsfdnlkdfj
-							2.司法解释拉倒吧
+							{{info.financing}}
 						</text>
 					</view>
 				</view>
 			</view>
 			<view class="item">
-				<image src="../../static/logo.png" mode=""></image>
+				<image :src="IMG_URL+info.logo" mode=""></image>
 				<view>
-					<text>阿里巴巴集团</text>
-					<text>移动互联网·B轮·0-99人</text>
+					<text>{{info.name}}</text>
+					<text>{{info.financing}} · {{info.staff}}</text>
 				</view>
 			</view>
 			<map class="map" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
 		</view>
-		<view class="btn">获取联系方式</view>
+		<view class="btn" @tap="getDeteil()">获取联系方式</view>
 		<uni-popup ref="popup" type="center">
 			<view class="vip-box">
 				<view class="close" @click="close">×</view>
@@ -53,7 +46,7 @@
 				</view>
 				<view class="fot">
 					<view @click="navMembership">立即发布</view>
-					<view class="cancel" @click="close">取消开通</view>
+					<view class="cancel" @click="close">取消发布</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -61,14 +54,58 @@
 </template>
 
 <script>
+	import {
+		ajax,
+	} from '@/static/js/base.js'
+	import api from '@/static/js/api.js'
+	import {
+		mapGetters
+	} from 'vuex'
 	export default {
 		data() {
 			return {
-				
+				info:{}
 			}
 		},
+		onShow() {
+			ajax({
+				url: api.getRecruitInfo,
+				type: "POST",
+				data: {
+					id: this.id
+				},
+			}).then(res => {
+				if (res.status_code == "ok") {
+					console.log(res)
+					this.info = res.data
+				}
+			})
+		},
+		onLoad(e) {
+			this.id = e.id
+		},
 		methods: {
-			
+			getDeteil(){
+				ajax({
+					url: api.getRecruitDetails,
+					type: "POST",
+					data: {
+						id: this.id
+					},
+				}).then(res => {
+					if (res.status_code == "ok") {
+						console.log(res)
+						this.info.hr_mobile = res.data.hr_mobile
+						// this.getInfo()
+						// this.info = res.data
+					}else if(res.status_code == 'error'){
+						this.$refs.popup.open();
+					}
+				})
+			},
+			close() {
+				this.$refs.popup.close();
+			}
 		}
 	}
 </script>

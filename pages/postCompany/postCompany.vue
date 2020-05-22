@@ -3,7 +3,7 @@
 		<view class="form">
 			<view class="item">
 				<label>公司名称</label>
-				<input type="text" value="" placeholder="请填写岗位名称" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name='name' @input="inputValue" placeholder="请填写岗位名称" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>公司地址</label>
@@ -52,10 +52,22 @@ export default {
 	data() {
 		return {
 			array: ['中国', '美国', '巴西', '日本'],
-			index: 0
+			index: 0,
+			formNode:{
+				name: ''
+			}
 		};
 	},
-	methods: {}
+	methods: {
+		inputValue(e){
+			let formNode = this.formNode
+			let name = e.currentTarget.dataset.name
+			let value = e.detail.value
+			formNode[name] = value
+			this.formNode = formNode
+			console.log(this.formNode)
+		}
+	}
 };
 </script>
 

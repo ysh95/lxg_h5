@@ -1,20 +1,32 @@
 // var  URL = "http://www.lxg.com"
-var URL = "https://xtn.beaconway.cn"
+var URL = "http://www.lxg.cc"
+var IMG_URL = "http://www.lxg.cc/uploads/"
 //B    MXXIII
 module.exports = {
 	URL: URL,
+	IMG_URL: IMG_URL,
 	// 登录接口
 	login: URL + '/login/login',
 	// 首页anner请求
-	index_banner: URL + '/index/banner',
+	index_banner: URL + '/api/getBanners',
+	// 招聘列表
+	recruit_List:  URL + '/api/getRecruit',
+	// 招聘详情
+	getRecruitInfo: URL + '/api/getRecruitInfo',
+	// 获取联系方式
+	getRecruitDetails: URL + '/api/getRecruitDetails',
 	// 求购分类推荐入口
-	home_push: URL + '/index/home_push',
+	home_push: URL + '/api/getTopNavigationBars',
 	// 求购分类默认入口
-	home_plain: URL + '/index/home_plain',
+	home_plain: URL + '/api/getMiddleNavigationBars',
 	// 求购信息列表
-	home_news: URL + '/index/home_news',
+	home_news: URL + '/api/getPurchases',
 	// 求购信息内容
-	home_news_xg: URL + '/index/home_news_xg',
+	home_news_xg: URL + '/api/purchaseInfo',
+	// 获取联系方式
+	home_get_contact: URL + '/api/getDetails',
+	// 上传图片
+	home_upload_img: URL + '/api/upload',
 	// 求购信息提交
 	home_news_do: URL + "/index/home_news_do",
 	// 求购发布类型

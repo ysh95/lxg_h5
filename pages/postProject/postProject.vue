@@ -13,6 +13,10 @@
 				<label>加盟金额</label>
 				<input type="text" value="" placeholder="请填写加盟金额" placeholder-class="placeholderSty" />
 			</view>
+			<view class="item">
+				<label>申请人数</label>
+				<input type="number" value="" placeholder="请填写申请人数" placeholder-class="placeholderSty" />
+			</view>
 			<view class="item" style="align-items: flex-start;">
 				<label>项目描述</label>
 				<textarea class="textarea" value="" placeholder="请填写项目描述" placeholder-class="placeholderSty"/>

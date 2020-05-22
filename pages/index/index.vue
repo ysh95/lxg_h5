@@ -5,39 +5,37 @@
 			<navigator class="search-wrap" hover-class="none" url="/pages/search/search">
 				<text>心疼你给你客户</text>
 				<view class="search-box">
-					<image src="/static/img/img1.png"></image>
+					<image src="/static/img/img4.png"></image>
 					<input type="text" placeholder="请输入搜索内容" disabled placeholder-class="search-placeholder">
 				</view>
 			</navigator>
-
+			<!-- banner轮播 -->
 			<swiper class="swiper-one" indicator-dots autoplay interval="3000" circular duration="1000" indicator-active-color="#F7F7F7">
 				<swiper-item v-for="(item, index) in bannerArr" :key="index">
 					<navigator class="nav-tap">
-						<image :src="URL + item.pic" class="slide-image"></image>
+						<image :src="item.banner" class="slide-image"></image>
 					</navigator>
 				</swiper-item>
 			</swiper>
-
+			<!-- 顶部导航 -->
 			<view class="classify">
 				<block v-for="(item, index) in classifyArr" :key="index">
-					<navigator class="classify-item" hover-class="none" :url="'/pages/search/search?fid=' + item.id">
-						<image :src="URL + item.pic"></image>
+					<navigator class="classify-item" hover-class="none" :url="item.url + '?id=' + item.id">
+						<image :src="item.icon"></image>
 						<text>{{item.title}}</text>
 					</navigator>
 				</block>
 			</view>
-
-
-
+			<!-- 中部导航 -->
 			<view class="demand">
 				<block v-for="(item, index) in demandArr" :key="index">
 					<!-- <navigator class="demand-item" :url="'/pages/release/release?fid='+ item.id"> -->
-					<navigator class="demand-item" url="/pages/indexRecruit/indexRecruit">
+					<navigator class="demand-item" :url="'/'+item.url + '?id=' + item.id">
 						<view class="words">
 							<view>我要{{item.title}}</view>
-							<text>{{item.description}}</text>
+							<text>{{item.subtitle}}</text>
 						</view>
-						<image :src="URL + item.pic"></image>
+						<image :src="item.icon"></image>
 					</navigator>
 				</block>
 			</view>
@@ -46,19 +44,21 @@
 				<image src="/static/img/img15.png"></image>
 			</view>
 			<view class="info">
-				<block v-for="(item, index) in list" :key="index">
-					<navigator class="info-item" hover-class="none" url="/pages/wantDetail/wantDetail">
+				<!-- api/getPurchases -->
+				<!-- 求购列表 -->
+				<block v-for="(item, index) in purchasesList" :key="index">
+					<navigator class="info-item" hover-class="none" :url="'/pages/wantDetail/wantDetail?id=' + item.id">
 					<!-- <navigator class="info-item" hover-class="none" :url="'/pages/info-details/info-details?id=' + item.id "> -->
-						<view class="title overflow-one">{{item.title}}</view>
-						<view class="text overflow-two">{{item.content}}</view>
+						<view class="title overflow-one">{{item.product}}</view>
+						<view class="text overflow-two">{{item.product_description}}</view>
 						<view class="fot">
 							<view class="city">
 								<image src="/static/img/img16.png"></image>
-								<text>{{item.telen}}</text>
+								<text>{{item.address}}</text>
 							</view>
 							<view class="time">
 								<image src="/static/img/img17.png"></image>
-								<text>{{item.time}}</text>
+								<text>{{item.updated_at}}</text>
 							</view>
 						</view>
 					</navigator>
@@ -91,6 +91,9 @@
 		},
 		data() {
 			return {
+				URL: '',
+				IMG_URL: '',
+				
 				bannerArr: [],
 				classifyArr: [],
 				demandArr: [],
@@ -100,11 +103,13 @@
 						tip: '~ 暂无数据 ~', // 提示
 					}
 				},
-				list: []
+				purchasesList: []
 			}
 		},
-		onLoad() {
+		onLoad(options) {
 			var that = this
+			that.URL = api.URL
+			that.IMG_URL = api.IMG_URL
 			// uni.getSetting({
 			// 	success(res) {
 			// 		if (res.authSetting['scope.userInfo']) {
@@ -121,26 +126,46 @@
 			
 			// 首页banner请求
 			ajax({
-				url: api.index_banner
+				url: api.index_banner,
+				type: "GET"
 			}).then(res => {
-				if (res.error_code == 4000) {
-					this.bannerArr = res.data
+				if (res.status_code == "ok") {
+					let bannerArr = res.data
+					for (let i = 0; i < bannerArr.length; i++) {
+						bannerArr[i].banner = `${that.IMG_URL}/${bannerArr[i].banner}`
+					}
+					this.bannerArr = bannerArr
 				}
 			})
 			// 求购分类推荐入口
 			ajax({
-				url: api.home_push
+				url: api.home_push,
+				type: "GET"
 			}).then(res => {
 				if (res.error_code == 4000) {
 					this.classifyArr = res.data
 				}
+				if (res.status_code == "ok") {
+					let classifyArr = res.data
+					for (let i = 0; i < classifyArr.length; i++) {
+						classifyArr[i].icon = `${that.IMG_URL}/${classifyArr[i].icon}`
+					}
+					this.classifyArr = classifyArr
+				}
 			})
 			// 求购分类默认入口
 			ajax({
-				url: api.home_plain
+				url: api.home_plain,
+				type: "GET"
 			}).then(res => {
-				if (res.error_code == 4000) {
-					this.demandArr = res.data
+				console.log(res)
+				if (res.status_code == "ok") {
+					let demandArr = res.data
+					for (let i = 0; i < demandArr.length; i++) {
+						demandArr[i].icon = `${that.IMG_URL}/${demandArr[i].icon}`
+					}
+					console.log(demandArr)
+					this.demandArr = demandArr
 				}
 			})
 		},
@@ -159,27 +184,30 @@
 				}
 			},
 			upCallback(mescroll) {
-				this.getList(mescroll, curPageData => {
-					if (mescroll.num == 1) this.list = []; //如果是第一页需手动制空列表
-					this.list = this.list.concat(curPageData)
+				this.getPurchases(mescroll, curPageData => {
+					if (mescroll.num == 1) this.list = curPageData; //如果是第一页需手动制空列表
+					this.purchasesList = this.purchasesList.concat(curPageData)
 					this.$nextTick(() => {
 						mescroll.endSuccess(curPageData.length);
 					})
 				})
 			},
-			getList(mescroll, cb) {
+			// 获取求购列表
+			getPurchases(mescroll, cb) {
 				ajax({
 					url: api.home_news,
+					type: "GET",
 					data: {
 						number: 10,
 						page: mescroll.num,
 					}
 				}).then(res => {
-					var list = res.data || []
-					list.forEach(item => {
-						item.time = formatDate(item.ctime)
-					})
-					cb(list)
+					console.log(res)
+					var purchasesList = res.data.data || []
+					// purchasesList.forEach(item => {
+					// 	item.time = formatDate(item.ctime)
+					// })
+					cb(purchasesList)
 				})
 			},
 			postWant(){
