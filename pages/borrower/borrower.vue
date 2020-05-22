@@ -1,15 +1,16 @@
 <template>
 	<view class="investor">
+		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="0upx">
 		<view class="content">
 			<block v-for="(item,index) in list" :key='index'>
 				<view class="item" @tap="go()">
 					<view class="top">
-						<text>{{item.name}}</text>
-						<text>投资金额：{{item.money}}</text>
+						<text>{{item.loan_name}}</text>
+						<text>投资金额：{{item.amount_of_money}}</text>
 					</view>
 					<view class="itemContent">
 						<label style="letter-spacing: 2upx;" >联 系 人:</label>
-						<text>{{item.trade}}</text>
+						<text>{{item.contacts}}</text>
 					</view>
 					<view class="itemContent">
 						<label for="">借款行业:</label>
@@ -17,30 +18,61 @@
 					</view>
 					<view class="itemContent">
 						<label for="">还款方式:</label>
-						<text>{{item.adder}}</text>
+						<text>{{item.repayment}}</text>
 					</view>
 					<view class="itemContent">
 						<label for="">借款利率:</label>
-						<text>{{item.adder}}</text>
+						<text>{{item.interest_rate}}</text>
 					</view>
 				</view>
 			</block>
 		</view>
+		</mescroll-uni>
 		<navigator url="../postLoan/postLoan" class="btn">发布借款人</navigator>
 	</view>
 </template>
 
 <script>
+	import { ajax } from '@/static/js/base.js';
+	import api from '@/static/js/api.js';
+	import { mapGetters } from 'vuex';
 	export default {
 		data() {
 			return {
-				list:[
-					{name: '后裔',money: '200万元',type: '债券投资',trade: '房地产',adder: '陕西省-高新区'},
-					{name: '后裔',money: '200万元',type: '债券投资',trade: '房地产',adder: '陕西省-高新区'}
-				]
+				upOption: {
+					textNoMore: '木有更多了', // 没有更多数据的提示文本
+					empty: {
+						tip: '~ 暂无订单内容 ~'
+					}
+				},
+				list: []
 			}
 		},
+		onShow() {
+			this.canReset && this.mescroll && this.mescroll.resetUpScroll();
+			this.canReset = true; // 过滤第一次的onShow事件,避免初始化界面时重复触发upCallback
+		},
 		methods: {
+			upCallback(mescroll) {
+				this.getList(mescroll, curPageData => {
+					mescroll.endSuccess(curPageData.length, false);
+					if (mescroll.num == 1) this.list = []; //如果是第一页需手动制空列表
+					this.list = this.list.concat(curPageData);
+				});
+			},
+			getList(mescroll, cb) {
+				ajax({
+					url: api.getLoan,
+					type: 'GET',
+					data: {
+						page_size: 10,
+						page: mescroll.num
+					}
+				}).then(res => {
+					var list = res.data.data || [];
+					cb(list);
+				});
+			},
 			go(){
 				uni.navigateTo({
 					url:'../borrowerDetail/borrowerDetail'

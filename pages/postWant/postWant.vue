@@ -135,7 +135,6 @@ export default {
 			let value = e.detail.value;
 			formNode[name] = value;
 			this.formNode = formNode;
-			this.$apply();
 		},
 		pay(e) {
 			this.isCheckState = e;

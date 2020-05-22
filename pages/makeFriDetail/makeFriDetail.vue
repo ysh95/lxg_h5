@@ -4,50 +4,47 @@
 			<view class="title">个人信息</view>
 			<view class="info">
 				<view class="top">
-					<image src="../../static/logo.png" mode=""></image>
+					<image :src="IMG_URL+info.avatar" mode=""></image>
 					<view class="right">
-						<text>lll</text>
+						<text>{{info.name}}</text>
 						<view>
-							<text>西安-高新区 </text>
-							<text>西安-高新区 </text>
-							<text>西安-高新区 </text>
+							<text>{{info.address}} </text>
+							<text>年龄： {{info.age}} </text>
+							<text>手机号： {{info.mobile}} </text>
 						</view>
 					</view>
 				</view>
 				<view class="every">
-					<text class="tip">22-25岁</text>
-					<text class="tip">22-25岁</text>
-					<text class="tip">22-25岁</text>
+					<text class="tip">{{info.marriage}}</text>
+					<text class="tip">{{info.height}}</text>
+					<text class="tip">月收入：{{info.income}}</text>
+					<text class="tip">{{info.work}}</text>
+					
 				</view>
 			</view>
 		</view>
 		<view class="item">
 			<view class="title">个性签名</view>
-			<text class="textLine">少时诵诗书所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所</text>
+			<text class="textLine">{{info.signature}}</text>
 		</view>
 		<view class="item">
 			<view class="title">相册</view>
 			<view class="image">
-				<image src="../../static/logo.png" mode=""></image>
-				<image src="../../static/logo.png" mode=""></image>
-				<image src="../../static/logo.png" mode=""></image>
-				<image src="../../static/logo.png" mode=""></image>
+				<image :src="IMG_URL+item" v-for="(item,index) in info.album" :key='index' mode=""></image>
 			</view>
 		</view>
 		<view class="item">
 			<view class="title">其他资料</view>
 			<view class="every">
-				<text class="tip">22-25岁</text>
-				<text class="tip">22-25岁</text>
-				<text class="tip">22-25岁</text>
+				<text class="tip" v-if="strType == 'string'">{{info.others}}</text>
+				<text class="tip" v-else v-for="(item,index) in info.others" :key="index">{{item}}</text>
 			</view>
 		</view>
 		<view class="item" style="margin-bottom: 110upx;">
 			<view class="title">择偶标准</view>
 			<view class="every">
-				<text class="tip">22-25岁</text>
-				<text class="tip">22-25岁</text>
-				<text class="tip">22-25岁</text>
+				<text class="tip" v-if="strType1 == 'string'">{{info.standard}}</text>
+				<text class="tip" v-else v-for="(item,index) in info.standard" :key="index">{{item}}</text>
 			</view>
 		</view>
 		<view class="btn" @tap="submit">获取联系方式</view>
@@ -57,11 +54,11 @@
 				<view class="close" @click="close">×</view>
 				<view class="text">
 					<text>发布信息</text>
-					<text>请先发布一条供求信息，即可查看联 系方式</text>
+					<text>请先发布一条供求信息，即可查看联系方式</text>
 				</view>
 				<view class="fot">
 					<view @click="navMembership">立即发布</view>
-					<view class="cancel" @click="close">取消开通</view>
+					<view class="cancel" @click="close">取消发布</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -69,20 +66,68 @@
 </template>
 
 <script>
-	
+	import { ajax } from '@/static/js/base.js';
+	import api from '@/static/js/api.js';	
 export default {
 	data() {
-		return {};
+		return {
+			info:{},
+			strType:'',
+			strType1: ''
+		};
+	},
+	onLoad(e) {
+		this.id = e.id
+		ajax({
+			url: api.getBlindDateInfo,
+			type: "POST",
+			data: {
+				id: this.id
+			},
+		}).then(res => {
+			if (res.status_code == "ok") {
+				console.log(res)
+				this.info = res.data
+				this.strType =typeof this.info.others
+				this.strType1 = typeof this.info.standard
+				console.log(this.strType)
+			}
+		})
 	},
 	methods: {
 		open(){
 			 this.$refs.popup.open()
 		},
 		submit() {
-			this.$refs.popup.open()
+			ajax({
+				url: api.getBlindDateDetails,
+				type: "POST",
+				data: {
+					id: this.id
+				},
+			}).then(res => {
+				if (res.status_code == "ok") {
+					console.log(res)
+					this.info.mobile = res.data.mobile
+					// this.getInfo()
+					// this.info = res.data
+				}else if(res.status_code == 'error'){
+					this.$refs.popup.open();
+				}else{
+					uni.showToast({
+						title:res.message,
+						icon:'none'
+					})
+				}
+			})
 		},
 		close() {
 			this.$refs.popup.close()
+		},
+		navMembership(){
+			uni.navigateTo({
+				url:'../postMakeFri/postMakeFri'
+			})
 		},
 	}
 };

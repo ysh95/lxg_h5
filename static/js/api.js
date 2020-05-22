@@ -15,6 +15,28 @@ module.exports = {
 	getRecruitInfo: URL + '/api/getRecruitInfo',
 	// 获取联系方式
 	getRecruitDetails: URL + '/api/getRecruitDetails',
+	// 发布招聘
+	addRecruit: URL + '/api/addRecruit',
+	// 求职列表
+	getJobWanted: URL + '/api/getJobWanted',
+	// 求职详情
+	getJobWantedInfo: URL + '/api/getJobWantedInfo',
+	// 获取联系方式
+	getJobWantedDetails: URL + '/api/getJobWantedDetails',
+	// 发布求职
+	addJobWanted: URL + '/api/addJobWanted',
+	// 相亲列表
+	getBlindDate: URL + '/api/getBlindDate',
+	// 相亲详情
+	getBlindDateInfo: URL + '/api/getBlindDateInfo',
+	// 相亲获取联系方式
+	getBlindDateDetails: URL + '/api/getBlindDateDetails',
+	// 发布
+	addBlindDateInfo: URL + '/api/addBlindDateInfo',
+	// 借款人详情
+	getLoan: URL + '/api/getLoan',
+	//  发布
+	addLoan: URL + '/api/addLoan',
 	// 求购分类推荐入口
 	home_push: URL + '/api/getTopNavigationBars',
 	// 求购分类默认入口

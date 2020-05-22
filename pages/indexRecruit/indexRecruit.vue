@@ -9,30 +9,32 @@
 			<text :class="1 == currentIndex ? 'title-sel' : ''" @tap="tab(1)">求职</text>
 		</view>
 		<view class="line"></view>
-		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top='200upx'>
-		<view class="content">
+		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="140upx">
+			<view class="content">
 				<block v-for="(item, index) in list" :key="index">
 					<view class="item" @tap="getDetail(item.id)">
-						<image :src="IMG_URL+item.logo" mode=""></image>
+						<image v-if="currentIndex == 0" :src="IMG_URL + item.logo" mode=""></image>
+						<image v-else :src="item.avatar" mode=""></image>
 						<view class="rigth">
 							<view class="top">
 								<text>{{ item.post_name }}</text>
-								<text>{{ item.post_salary }}</text>
+								<text v-if="currentIndex == 0">{{ item.post_salary }}</text>
+								<text v-else>{{ item.salary }}</text>
 							</view>
 							<view class="center">
 								<text>{{ item.name }}</text>
 								<label>|</label>
-								<text>{{ item.post_experience }}</text>
+								<text v-if="currentIndex == 0">{{ item.post_experience }}</text>
+								<text v-if="currentIndex == 1">{{ item.experience }}</text>
 							</view>
 							<view class="bottom">
 								<text>{{ item.address }}</text>
-								<text>{{ item.tip }}</text>
+								<!-- <text>{{ item.tip }}</text> -->
 							</view>
 						</view>
 					</view>
 				</block>
-			
-		</view>
+			</view>
 		</mescroll-uni>
 		<view class="btn" v-if="currentIndex == 0" @tap="post(0)">发布招聘信息</view>
 		<view class="btn" v-else @tap="post(1)">发布求职信息</view>
@@ -40,14 +42,10 @@
 </template>
 
 <script>
-	import {
-		ajax,
-	} from '@/static/js/base.js'
-	import api from '@/static/js/api.js'
-	import {
-		mapGetters
-	} from 'vuex'
-	export default {
+import { ajax } from '@/static/js/base.js';
+import api from '@/static/js/api.js';
+import { mapGetters } from 'vuex';
+export default {
 	data() {
 		return {
 			currentIndex: 0,
@@ -61,31 +59,31 @@
 		};
 	},
 	onShow() {
-		this.listUrl = api.recruit_List
-		this.canReset && this.mescroll && this.mescroll.resetUpScroll()
-		this.canReset = true // 过滤第一次的onShow事件,避免初始化界面时重复触发upCallback
+		this.listUrl = api.recruit_List;
+		this.canReset && this.mescroll && this.mescroll.resetUpScroll();
+		this.canReset = true; // 过滤第一次的onShow事件,避免初始化界面时重复触发upCallback
 	},
 	methods: {
 		tab(e) {
 			if (this.currentIndex != e) {
 				// this.navIdx = e
 				this.currentIndex = e;
-				this.list = [] // 在这里手动置空列表,可显示加载中的请求进度
-				this.mescroll.resetUpScroll() // 刷新列表数据
+				this.list = []; // 在这里手动置空列表,可显示加载中的请求进度
+				this.mescroll.resetUpScroll(); // 刷新列表数据
 			}
 		},
 		upCallback(mescroll) {
 			this.getList(mescroll, curPageData => {
 				mescroll.endSuccess(curPageData.length, false);
 				if (mescroll.num == 1) this.list = []; //如果是第一页需手动制空列表
-				this.list = this.list.concat(curPageData)
-			})
+				this.list = this.list.concat(curPageData);
+			});
 		},
 		getList(mescroll, cb) {
-			if(this.currentIndex == 0){
-				this.listUrl = api.recruit_List
-			}else{
-				this.listUrl = ''
+			if (this.currentIndex == 0) {
+				this.listUrl = api.recruit_List;
+			} else {
+				this.listUrl = api.getJobWanted;
 			}
 			ajax({
 				url: this.listUrl,
@@ -95,9 +93,9 @@
 					page: mescroll.num
 				}
 			}).then(res => {
-				var list = res.data.data || []
-				cb(list)
-			})
+				var list = res.data.data || [];
+				cb(list);
+			});
 		},
 		post(e) {
 			if (e == 0) {
@@ -110,10 +108,14 @@
 				});
 			}
 		},
-		getDetail(id){
-			if(this.currentIndex == 0){
+		getDetail(id) {
+			if (this.currentIndex == 0) {
 				uni.navigateTo({
 					url: `../recruitDetail/recruitDetail?id=${id}`
+				});
+			} else {
+				uni.navigateTo({
+					url: `../jobDetail/jobDetail?id=${id}`
 				});
 			}
 		}
