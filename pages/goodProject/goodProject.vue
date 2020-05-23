@@ -4,47 +4,75 @@
 			<image src="../../static/img/img4.png" mode=""></image>
 			<input type="text" value="" placeholder="请输入搜索内容" />
 		</view>
-		<view class="tab">
+		<!-- 		<view class="tab">
 			<text :class="0 == currentIndex ? 'title-sel' : ''" @tap="tab(0)">机器人教育</text>
 			<text :class="1 == currentIndex ? 'title-sel' : ''"  @tap="tab(1)">投资金额</text>
-		</view>
-		<view class="line"></view>
+		</view> -->
+		<!-- <view class="line"></view> -->
+		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="36upx">
 		<view class="content">
 			<block v-for="(item, index) in list" :key="index">
-				<view class="item" @tap="go()">
-					<image :src="item.img" mode=""></image>
+				<view class="item" @tap="go(item.id)">
+					<image :src="IMG_URL+item.image" mode=""></image>
 					<view class="rigth">
 						<view class="top">
-							<text>{{ item.title }}</text>
+							<text>{{ item.project_name }}</text>
 						</view>
-						<view class="center">嘻嘻嘻嘻嘻嘻嘻嘻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻谢谢</view>
+						<view class="center">{{item.summary}}</view>
 						<view class="bottom">
-							<text>{{ item.adder }}</text>
-							<text>{{ item.tip }}</text>
+							<text>{{ item.amount_of_money }}</text>
+							<text>{{ item.apply_num }}</text>
 						</view>
 					</view>
 				</view>
 			</block>
 		</view>
+		</mescroll-uni>
 		<view class="btn" @tap="post()">发布项目</view>
 		<!-- <view class="btn" v-else @tap="post(1)">发布求职信息</view> -->
 	</view>
 </template>
 
 <script>
+import { ajax } from '@/static/js/base.js';
+import api from '@/static/js/api.js';
+import { mapGetters } from 'vuex';
 export default {
 	data() {
 		return {
-			currentIndex: 0,
-			list: [
-				{ img: '', title: '设计师', money: '15K-20K', adder: '西安-高新', tip: '招聘岗位', company: '阿里巴巴', time: '1-3年工作经验' },
-				{ img: '../../static/img/img3.png', title: '设计师', money: '15K-20K', adder: '西安-高新', tip: '招聘岗位', company: '阿里巴巴', time: '1-3年工作经验' }
-			]
+			upOption: {
+				textNoMore: '木有更多了', // 没有更多数据的提示文本
+				empty: {
+					tip: '~ 暂无内容 ~'
+				}
+			},
+			list: []
 		};
 	},
+	onShow() {
+		this.canReset && this.mescroll && this.mescroll.resetUpScroll();
+		this.canReset = true; // 过滤第一次的onShow事件,避免初始化界面时重复触发upCallback
+	},
 	methods: {
-		tab(e) {
-			this.currentIndex = e;
+		upCallback(mescroll) {
+			this.getList(mescroll, curPageData => {
+				mescroll.endSuccess(curPageData.length, false);
+				if (mescroll.num == 1) this.list = []; //如果是第一页需手动制空列表
+				this.list = this.list.concat(curPageData);
+			});
+		},
+		getList(mescroll, cb) {
+			ajax({
+				url: api.getProject,
+				type: 'GET',
+				data: {
+					page_size: 10,
+					page: mescroll.num
+				}
+			}).then(res => {
+				var list = res.data.data || [];
+				cb(list);
+			});
 		},
 		post(e) {
 			uni.navigateTo({
@@ -53,7 +81,7 @@ export default {
 		},
 		go(e) {
 			uni.navigateTo({
-				url: '../goodProjectDetail/goodProjectDetail'
+				url: `../goodProjectDetail/goodProjectDetail?id=${e}`
 			});
 		}
 	}
@@ -82,20 +110,20 @@ page {
 		height: 28upx;
 	}
 }
-.tab{
+.tab {
 	width: 750upx;
 	// padding: 0 126upx;
 	display: flex;
 	justify-content: space-around;
 	height: 80upx;
 	line-height: 80upx;
-	text{
+	text {
 		font-size: 30upx;
 		color: #343434;
 	}
-	.title-sel{
-		color: #0076FF;
-		border-bottom: 4upx solid #007AFF;
+	.title-sel {
+		color: #0076ff;
+		border-bottom: 4upx solid #007aff;
 	}
 }
 .content {
@@ -133,7 +161,7 @@ page {
 			margin: 8upx 0;
 			color: #565656;
 			font-size: 24upx;
-			width:450upx;
+			width: 450upx;
 			text-overflow: ellipsis;
 			display: -webkit-box;
 			-webkit-box-orient: vertical;

@@ -55,7 +55,6 @@
 						<text>{{current}}/200</text>
 					</view>
 				</view>
-
 				<view class="fot">
 					<view v-if="typeId == 1" @click="navMembership">立即发布</view>
 					<view v-if="typeId == 2" @click="post()">立即发布</view>

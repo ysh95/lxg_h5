@@ -43,7 +43,12 @@ module.exports = {
 	getLoanDetails: URL + '/api/getLoanDetails',
 	// 留言
 	addMessage: URL + '/api/addMessage',
-	
+	// 招商加盟列表
+	getProject: URL + '/api/getProject',
+	// 招商加盟详情
+	getProjectInfo: URL + '/api/getProjectInfo',
+	// 获取联系方式
+	getProjectDetails: URL + '/api/getProjectDetails',
 	// 求购分类推荐入口
 	home_push: URL + '/api/getTopNavigationBars',
 	// 求购分类默认入口
