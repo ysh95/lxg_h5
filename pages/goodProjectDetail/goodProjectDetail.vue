@@ -2,59 +2,64 @@
 	<view class="want">
 		<view class="item">
 			<view class="title">项目介绍</view>
-			<image src="../../static/logo.png" mode=""></image>
+			<image :src="IMG_URL+info.image" mode=""></image>
 			<view class="every four">
 				<label>项目名称：</label>
-				<text>123</text>
+				<text>{{info.project_name}}</text>
 			</view>
 			<view class="every four">
 				<label>所属行业：</label>
-				<text>123</text>
+				<text>{{info.industry}}</text>
 			</view>
 			<view class="every four">
 				<label>加盟金额：</label>
-				<text>123</text>
+				<text>{{info.amount_of_money}}</text>
 			</view>
 			<view class="every four">
 				<label>申请人数：</label>
-				<text>123</text>
+				<text>{{info.apply_num}}</text>
 			</view>
 			<view class="every four" style="align-items: flex-start;">
 				<label>项目概述：</label>
-				<text class="textLine">少时诵诗书所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所</text>
+				<text class="textLine">{{info.summary}}</text>
 			</view>
 		</view>
 		<view class="item" style="margin-bottom: 110upx;">
 			<view class="title">联系方式</view>
 			<view class="every">
 				<label>联系人姓名：</label>
-				<text>123</text>
+				<text>{{info.contacts}}</text>
 			</view>
 			<view class="every">
 				<label>联系人电话：</label>
-				<text>123</text>
+				<text>{{info.mobile}}</text>
 			</view>
 			<view class="every">
 				<label>联系人单位：</label>
-				<text>123</text>
+				<text>{{info.company}}</text>
 			</view>
 		</view>
-		<view class="bottom">
-			<text>获取联系方式</text>
-			<text>我要留言</text>
+		<view class="submit">
+			<text @tap="getDetail(1)">获取联系方式</text>
+			<text @tap="postMeaasge(2)">我要留言</text>
 		</view>
-		<!-- <view class="btn" @tap="submit">获取联系方式</view> -->
-		
 		<uni-popup ref="popup" type="center">
 			<view class="vip-box">
 				<view class="close" @click="close">×</view>
-				<view class="text">
+				<view class="text" v-if="typeId == 1">
 					<text>发布信息</text>
 					<text>请先发布一条供求信息，即可查看联 系方式</text>
 				</view>
+				<view class="text" v-if="typeId == 2">
+					<view class="textarea">
+						<textarea value="" placeholder="" @input="inputValue" maxlength="200"/>
+						<text>{{current}}/200</text>
+					</view>
+				</view>
 				<view class="fot">
-					<view @click="navMembership">立即发布</view>
-					<view class="cancel" @click="close">取消开通</view>
+					<view v-if="typeId == 1" @click="navMembership">立即发布</view>
+					<view v-if="typeId == 2" @click="post()">立即发布</view>
+					<view class="cancel" @click="close">取消发布</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -62,21 +67,99 @@
 </template>
 
 <script>
-	
+import { ajax } from '@/static/js/base.js';
+import api from '@/static/js/api.js';
+import { mapGetters } from 'vuex';
 export default {
 	data() {
-		return {};
+		return {
+			info: {},
+			typeId: '',
+			current: 0
+		};
+	},
+	onLoad(e) {
+		this.id = e.id;
+		ajax({
+			url: api.getProjectInfo,
+			type: 'POST',
+			data: {
+				id: this.id
+			}
+		}).then(res => {
+			if (res.status_code == 'ok') {
+				console.log(res);
+				this.info = res.data;
+			}
+		});
 	},
 	methods: {
-		open(){
-			 this.$refs.popup.open()
-		},
-		submit() {
-			this.$refs.popup.open()
+		getDetail(e) {
+			this.typeId = e;
+			ajax({
+				url: api.getProjectDetails,
+				type: 'POST',
+				data: {
+					id: this.id
+				}
+			}).then(res => {
+				if (res.status_code == 'ok') {
+					console.log(res);
+					this.info.mobile = res.data.mobile;
+				} else if (res.status_code == 'error') {
+					this.$refs.popup.open();
+				} else {
+					uni.showToast({
+						title: res.message,
+						icon: 'none'
+					});
+				}
+			});
 		},
 		close() {
-			this.$refs.popup.close()
+			this.$refs.popup.close();
 		},
+		navMembership() {
+			uni.navigateTo({
+				url: '../postProject/postProject'
+			});
+			this.$refs.popup.close();
+		},
+		postMeaasge(e) {
+			this.typeId = e;
+			this.$refs.popup.open();
+		},
+		inputValue(e) {
+			var len = parseInt(e.detail.value.length);
+			// if (len > 200) return;
+			console.log(len)
+			this.content = e.detail.value
+			this.current = len
+		},
+		post(){
+			ajax({
+				url: api.addMessage,
+				type: 'POST',
+				data: {
+					content: this.content
+				}
+			}).then(res => {
+				if (res.status_code == 'ok') {
+					console.log(res);
+					uni.showToast({
+						title: res.message,
+						icon: 'none'
+					});
+					this.$refs.popup.close();
+					// this.info.mobile = res.data.mobile;
+				}else {
+					uni.showToast({
+						title: res.message,
+						icon: 'none'
+					});
+				}
+			});
+		}
 	}
 };
 </script>
@@ -267,6 +350,49 @@ page {
 			color: #FFFFFF;
 			border: none;
 		}
+	}
+}
+.submit {
+	width: 700upx;
+	padding: 26upx;
+	display: flex;
+	justify-content: space-around;
+	margin-top: 80upx;
+	text {
+		height: 90upx;
+		width: 300upx;
+		text-align: center;
+		border: 1upx solid #007aff;
+		line-height: 90upx;
+		color: #0076ff;
+		font-size: 28upx;
+		border-radius: 8upx;
+		&:first-of-type {
+			background-color: #007aff;
+			color: #ffffff;
+		}
+	}
+}
+.textarea {
+	// background-color: #C0C0C0;
+	width: 89%;
+	margin-top: 14upx;
+	border: 1upx solid #eee;
+	border-radius: 6upx;
+	padding: 20upx 20upx 0;
+	text-align: left;
+	color: #565656;
+	font-size: 28upx;
+	textarea{
+		width: 100%;
+		text-align: justify;
+	}
+	text{
+		text-align: right !important;
+		color: #C0C0C0;
+		font-weight: 200;
+		font-size: 26upx;
+		display: block;
 	}
 }
 </style>
