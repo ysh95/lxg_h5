@@ -35,7 +35,7 @@
 				<label>联系电话</label>
 				<input type="number" value="" data-name="mobile" @input="getSetData" placeholder="请填写联系电话" placeholder-class="placeholderSty" />
 			</view>
-			<view class="item">
+			<view class="item" style="align-items: flex-start;">
 				<label>图片上传</label>
 				<view class="imgList">
 					<image :src="item" mode="" v-for="(item, index) in imagesShow" :key="index"></image>
@@ -100,7 +100,6 @@ export default {
 					Promise.all(
 						res.tempFiles.map(item => {
 							return new Promise((resolve, reject) => {
-								console.log(item);
 								if (item.size > 10000000) {
 									// if (item.size > 500) {
 									uni.showToast({
@@ -113,6 +112,9 @@ export default {
 										url: api.home_upload_img,
 										filePath: item.path,
 										name: 'image',
+                    formData: {
+                      disk: 'purchase'
+                    },
 										header: {
 											// Authorization: this.$parent.globalData.token
 										},
