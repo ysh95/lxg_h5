@@ -3,58 +3,66 @@
 		<view class="form">
 			<view class="item">
 				<label>采购产品</label>
-				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写采购产品名称" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="product" @input="getSetData" placeholder="请填写采购产品名称" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>采购数量</label>
-				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写采购数量" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="num" @input="getSetData" placeholder="请填写采购数量" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>产品规格</label>
-				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写产品规格" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="product_spec" @input="getSetData" placeholder="请填写产品规格" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>项目名称*</label>
-				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写项目名称*" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="project" @input="getSetData" placeholder="请填写项目名称*" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>项目地址</label>
-				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写项目地址" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="address" @input="getSetData" placeholder="请填写项目地址" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>预算金额</label>
-				<input type="number" value="" data-name="author" @input="getSetData" placeholder="请填写预算金额" placeholder-class="placeholderSty" />
+				<input type="number" value="" data-name="amount_of_money" @input="getSetData" placeholder="请填写预算金额" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>结款方式</label>
 				<view class="radioGroup">
-					<block v-for="(item, index) in selList" :key="index">
-						<view class="" @tap="pay(index)">
-							<image :src="isCheckState == index ? iconsel : iconNosel" class="section" :class="isCheckState == index ? iconsel : iconNosel"></image>
-							<text>{{ item.name }}</text>
-						</view>
-					</block>
+					<view class="" @tap="pay(1)">
+						<image src="../../static/img/img1.png" class="section" v-if="formNode.method == '1'"></image>
+					  <image src="../../static/img/img2.png" class="section" v-else></image>
+						<text>现结</text>
+					</view>
+					<view class="" @tap="pay(2)">
+					  <image src="../../static/img/img1.png" class="section" v-if="formNode.method == '2'"></image>
+					  <image src="../../static/img/img2.png" class="section" v-else></image>
+					  <text>分期</text>
+					</view>
 				</view>
 			</view>
 			<view class="item">
 				<label>采购期限</label>
 				<view class="radioGroup">
-					<block v-for="(item, index) in selList" :key="index">
-						<view class="" @tap="buyType(index)">
-							<image :src="isbuyType == index ? iconsel : iconNosel" class="section" :class="isbuyType == index ? iconsel : iconNosel"></image>
-							<text>{{ item.name }}</text>
-						</view>
-					</block>
+          <view class="" @tap="buyType(1)">
+          	<image src="../../static/img/img1.png" class="section" v-if="formNode.purchase_period == '1'"></image>
+            <image src="../../static/img/img2.png" class="section" v-else></image>
+          	<text>单次采购</text>
+          </view>
+          <view class="" @tap="buyType(2)">
+            <image src="../../static/img/img1.png" class="section" v-if="formNode.purchase_period == '2'"></image>
+            <image src="../../static/img/img2.png" class="section" v-else></image>
+            <text>长期采购</text>
+          </view>
 				</view>
 			</view>
 			<view class="item" style="align-items: flex-start;">
 				<label>产品描述</label>
-				<textarea class="textarea" value="" placeholder="请填写采购产品描述信息" placeholder-class="placeholderSty" />
+				<textarea class="textarea" value="" data-name="product_description" @input="getSetData" placeholder="请填写采购产品描述信息" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item" style="align-items: flex-start;">
 				<label>上传图片</label>
 				<view class="imgList">
-					<image :src="item" mode="" v-for="(item, index) in images" :key="index"></image>
+					<image :src="item" mode="" v-for="(item, index) in imagesShow" :key="index"></image>
 					<image src="../../static/img/img3.png" mode="" @tap="uploadImg" v-if="images.length < 9"></image>
 				</view>
 			</view>
@@ -62,35 +70,39 @@
 		<view class="form five">
 			<view class="item">
 				<label>供货商地区</label>
-				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写供货商地区" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="area" @input="getSetData" placeholder="请填写供货商地区" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>供货商品牌</label>
-				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写供货商品牌" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="brand" @input="getSetData" placeholder="请填写供货商品牌" placeholder-class="placeholderSty" />
 			</view>
 		</view>
 		<view class="form five" style="margin-bottom: 90upx;">
 			<view class="item">
 				<label>采购人单位</label>
-				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写采购人单位" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="company" @input="getSetData" placeholder="请填写采购人单位" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>采购人姓名</label>
-				<input type="text" value="" data-name="author" @input="getSetData" placeholder="请填写采购人姓名" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="name" @input="getSetData" placeholder="请填写采购人姓名" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>采购人电话</label>
-				<input type="number" value="" data-name="author" @input="getSetData" placeholder="请填写采购人电话" placeholder-class="placeholderSty" />
+				<input type="number" value="" data-name="mobile" @input="getSetData" placeholder="请填写采购人电话" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>是否紧急</label>
 				<view class="radioGroup">
-					<block v-for="(item, index) in urgentList" :key="index">
-						<view class="" @tap="urgentType(index)">
-							<image :src="isUrgent == index ? iconsel : iconNosel" class="section" :class="isUrgent == index ? iconsel : iconNosel"></image>
-							<text>{{ item.name }}</text>
+						<view class="" @tap="urgentType(2)">
+							<image src="../../static/img/img1.png" class="section" v-if="formNode.state == '2'"></image>
+              <image src="../../static/img/img2.png" class="section" v-else></image>
+							<text>紧急</text>
 						</view>
-					</block>
+            <view class="" @tap="urgentType(1)">
+            	<image src="../../static/img/img1.png" class="section" v-if="formNode.state == '1'"></image>
+            	<image src="../../static/img/img2.png" class="section" v-else></image>
+            	<text>不紧急</text>
+            </view>
 				</view>
 			</view>
 		</view>
@@ -104,19 +116,26 @@ import api from '@/static/js/api.js';
 export default {
 	data() {
 		return {
+      URL: '',
+      IMG_URL: '',
 			formNode: {
-				
+        product: '',
+        num: '',
+        product_spec: '',
+        project: '',
+        address: '',
+        amount_of_money: '',
+        product_description: '',
+        images: '',
+        area: '',
+        brand: '',
+        company: '',
+        name: '',
+        mobile: '',
+        method: '',
+        purchase_period: '',
+				state: ''
 			},
-			URL: '',
-			IMG_URL: '',
-			isCheckState: 0,
-			isbuyType: 0,
-			isUrgent: 0,
-			selList: [{ name: '现金' }, { name: '分期' }],
-			buyList: [{ name: '单次采购' }, { name: '长期采购' }],
-			urgentList: [{ name: '紧急' }, { name: '非紧急' }],
-			iconsel: '../../static/img/img1.png',
-			iconNosel: '../../static/img/img2.png',
 			images: [], // 仅用于上传
 			imagesShow: [] // 仅用于显示
 		};
@@ -137,13 +156,13 @@ export default {
 			this.formNode = formNode;
 		},
 		pay(e) {
-			this.isCheckState = e;
+			this.formNode.method = e;
 		},
 		buyType(e) {
-			this.isbuyType = e;
+			this.formNode.purchase_period = e;
 		},
 		urgentType(e) {
-			this.isUrgent = e;
+			this.formNode.state = e;
 		},
 		uploadImg() {
 			const that = this;
@@ -201,7 +220,52 @@ export default {
 						.catch(err => console.log(err));
 				}
 			});
-		}
+		},
+    submit() {
+      const that = this
+      let formNode = that.formNode
+      formNode.images = that.images.toString()
+      // 非空校验
+      for (let key in formNode) {
+        if (!formNode[key]) {
+          uni.showToast({
+              title: '请完善提交信息',
+              duration: 2000
+          });
+          return false
+        }
+      }
+      if (formNode.mobile.length != 11) {
+        uni.showToast({
+            title: '请完输入完整的手机号',
+            duration: 2000
+        });
+        return false
+      }
+      ajax({
+      	url: `${that.URL}/api/addPurchase`,
+      	type: "POST",
+        data: formNode
+      }).then(res => {
+        console.log(res)
+      	if (res.status_code == "ok") {
+      		let bannerArr = res.data
+          uni.showToast({
+            title: '发布成功',
+            icon: 'success',
+            duration: 2000
+          });
+          setTimeout(() => {
+            uni.navigateBack()
+          }, 2000)
+      	} else {
+          uni.showToast({
+            title: res.message,
+            duration: 2000
+          });
+        }
+      })
+    }
 	}
 };
 </script>
