@@ -72,8 +72,6 @@
 					if (res.status_code == "ok") {
 						console.log(res)
 						this.info.mobile = res.data.mobile
-						// this.getInfo()
-						// this.info = res.data
 					}else if(res.status_code == 'error'){
 						this.$refs.popup.open();
 					}

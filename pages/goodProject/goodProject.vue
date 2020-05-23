@@ -4,11 +4,6 @@
 			<image src="../../static/img/img4.png" mode=""></image>
 			<input type="text" value="" placeholder="请输入搜索内容" />
 		</view>
-		<!-- 		<view class="tab">
-			<text :class="0 == currentIndex ? 'title-sel' : ''" @tap="tab(0)">机器人教育</text>
-			<text :class="1 == currentIndex ? 'title-sel' : ''"  @tap="tab(1)">投资金额</text>
-		</view> -->
-		<!-- <view class="line"></view> -->
 		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="36upx">
 		<view class="content">
 			<block v-for="(item, index) in list" :key="index">

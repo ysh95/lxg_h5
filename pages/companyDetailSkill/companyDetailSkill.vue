@@ -4,41 +4,41 @@
 			<view class="title">公司介绍</view>
 			<view class="every">
 				<label>公司名称：</label>
-				<text>123</text>
+				<text>{{info.name}}</text>
 			</view>
 			<view class="every">
 				<label>行业经验：</label>
-				<text>123</text>
+				<text>{{info.experience}}</text>
 			</view>
 			<view class="every">
 				<label>开设项目：</label>
-				<text>123</text>
+				<text>{{info.project}}</text>
 			</view>
 			<view class="every">
 				<label>公司地址：</label>
-				<text>123</text>
+				<text>{{info.address}}</text>
 			</view>
 			<view class="every">
 				<label>每日成本：</label>
-				<text>123</text>
+				<text>{{info.price}}</text>
 			</view>
 		</view>
 		<view class="item">
 			<view class="title">联系方式</view>
 			<view class="every">
 				<label style="letter-spacing: 2upx;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label>
-				<text>123</text>
+				<text>{{info.contacts}}</text>
 			</view>
 			<view class="every">
 				<label>联系方式：</label>
-				<text>123</text>
+				<text>{{info.mobile}}</text>
 			</view>
 			<view class="every">
-				<label>联系地址：</label>
-				<text>123</text>
+				<label>联系人岗位：</label>
+				<text>{{info.post_name}}</text>
 			</view>
 		</view>
-		<view class="btn" @tap="submit">获取联系方式</view>
+		<view class="btn" @tap="getDetail">获取联系方式</view>
 		
 		<uni-popup ref="popup" type="center">
 			<view class="vip-box">
@@ -49,7 +49,7 @@
 				</view>
 				<view class="fot">
 					<view @click="navMembership">立即发布</view>
-					<view class="cancel" @click="close">取消开通</view>
+					<view class="cancel" @click="close">取消发布</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -57,23 +57,66 @@
 </template>
 
 <script>
-	
-export default {
-	data() {
-		return {};
-	},
-	methods: {
-		open(){
-			 this.$refs.popup.open()
+	import {
+		ajax,
+	} from '@/static/js/base.js'
+	import api from '@/static/js/api.js'
+	import {
+		mapGetters
+	} from 'vuex'
+	export default {
+		data() {
+			return {
+				info:{}
+			}
 		},
-		submit() {
-			this.$refs.popup.open()
+		onLoad(e) {
+			this.id = e.id
+			ajax({
+				url: api.getNeedSkillInfo,
+				type: "POST",
+				data: {
+					id: this.id
+				},
+			}).then(res => {
+				if (res.status_code == "ok") {
+					console.log(res)
+					this.info = res.data
+				}
+			})
 		},
-		close() {
-			this.$refs.popup.close()
-		},
+		methods: {
+			getDetail(){
+				ajax({
+					url: api.getNeedSkillDetails,
+					type: "POST",
+					data: {
+						id: this.id
+					},
+				}).then(res => {
+					if (res.status_code == "ok") {
+						console.log(res)
+						this.info.mobile = res.data.mobile
+					}else if(res.status_code == 'error'){
+						this.$refs.popup.open();
+					}else{
+						uni.showToast({
+							title: res.data,
+							icon:'none'
+						})
+					}
+				})
+			},
+			close() {
+				this.$refs.popup.close();
+			},
+			navMembership(){
+				uni.navigateTo({
+					url:'../postCompany/postCompany'
+				})
+			},
+		}
 	}
-};
 </script>
 
 <style lang="scss">

@@ -49,6 +49,20 @@ module.exports = {
 	getProjectInfo: URL + '/api/getProjectInfo',
 	// 获取联系方式
 	getProjectDetails: URL + '/api/getProjectDetails',
+	// 我有技能（公司）
+	getNeedSkill: URL + '/api/getNeedSkill',
+	// 获取详情
+	getNeedSkillInfo: URL + '/api/getNeedSkillInfo',
+	// 获取联系方式
+	getNeedSkillDetails: URL + '/api/getNeedSkillDetails',
+	// 我有技能（个人）
+	getMySkill: URL + '/api/getMySkill',
+	// 详情
+	getMySkillInfo: URL + '/api/getMySkillInfo',
+	// 联系方式
+	getMySkillDetails: URL + '/api/getMySkillDetails',
+	
+	
 	// 求购分类推荐入口
 	home_push: URL + '/api/getTopNavigationBars',
 	// 求购分类默认入口
