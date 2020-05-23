@@ -1,11 +1,6 @@
 <template>
 	<view class="indexRecruit">
-		<view class="searsh">
-			<image src="../../static/img/img4.png" mode=""></image>
-			<input type="text" value="" placeholder="请输入搜索内容" />
-		</view>
-		<view class="line"></view>
-		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="36upx">
+		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="0">
 			<view class="content">
 				<block v-for="(item, index) in list" :key="index">
 					<view class="item" @tap="go(item.id)">
@@ -68,8 +63,15 @@ export default {
 					page: mescroll.num
 				}
 			}).then(res => {
-				var list = res.data.data || [];
-				cb(list);
+				if(res.status_code == "ok"){
+					var list = res.data.data || [];
+					cb(list);
+				} else if(res.status_code == "error") {
+				  if(res.message == '暂无信息'){
+				  	this.list = []
+				  	this.mescroll.endByPage(0, 0);
+					}
+				}
 			});
 		},
 		post(e) {
@@ -110,7 +112,7 @@ page {
 }
 .content {
 	width: 700upx;
-	padding: 26upx 26upx 90upx;
+	padding: 26upx 26upx 30upx;
 	.item {
 		width: 100%;
 		border-bottom: 1upx solid #eeeeee;

@@ -4,7 +4,7 @@
 			<image src="../../static/img/img4.png" mode=""></image>
 			<input type="text" value="" placeholder="请输入搜索内容" />
 		</view>
-		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="36upx">
+		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="36upx" bottom='30upx'>
 		<view class="content">
 			<block v-for="(item, index) in list" :key="index">
 				<view class="item" @tap="go(item.id)">
@@ -123,7 +123,8 @@ page {
 }
 .content {
 	width: 700upx;
-	padding: 26upx 26upx 90upx;
+	padding: 26upx 26upx 0;
+	// height: 89vh;
 	.item {
 		width: 100%;
 		border-bottom: 1upx solid #eeeeee;
@@ -134,7 +135,6 @@ page {
 		image {
 			width: 220upx;
 			height: 162upx;
-			// background-color: #007AFF;
 		}
 		.rigth {
 			width: 450upx;

@@ -88,8 +88,15 @@ export default {
 					gender: this.gender
 				}
 			}).then(res => {
-				var list = res.data.data || [];
-				cb(list);
+				if(res.status_code == "ok"){
+					var list = res.data.data || [];
+					cb(list);
+				} else if(res.status_code == "error") {
+				  if(res.message == '暂无信息'){
+				  	this.list = []
+				  	this.mescroll.endByPage(0, 0);
+					}
+				}
 			});
 		},
 		post(e) {
