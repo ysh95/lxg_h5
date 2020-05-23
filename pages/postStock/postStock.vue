@@ -161,7 +161,7 @@ export default {
 										filePath: item.path,
 										name: 'image',
 		                formData: {
-		                  disk: 'purchase'
+		                  disk: 'financing/file'
 		                },
 										header: {
 											// Authorization: this.$parent.globalData.token

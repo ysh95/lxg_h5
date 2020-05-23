@@ -14,7 +14,7 @@
 				<input type="text" value="" data-name="product_spec" @input="getSetData" placeholder="请填写产品规格" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
-				<label>项目名称*</label>
+				<label>项目名称</label>
 				<input type="text" value="" data-name="project" @input="getSetData" placeholder="请填写项目名称*" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">

@@ -22,7 +22,7 @@
 				<textarea class="textarea" value="" data-name="summary" @input="getSetData" placeholder="请填写项目描述" placeholder-class="placeholderSty"/>
 			</view>
 		</view>
-		<view class="form">
+		<view class="form" style="margin-bottom: 60upx;">
 			<view class="item">
 				<label>单位名称</label>
 				<input type="text" value="" data-name="company" @input="getSetData" placeholder="请填写单位名称" placeholder-class="placeholderSty" />
@@ -113,7 +113,7 @@ export default {
 										filePath: item.path,
 										name: 'image',
                     formData: {
-                      disk: 'purchase'
+                      disk: 'projected/image'
                     },
 										header: {
 											// Authorization: this.$parent.globalData.token

@@ -14,11 +14,11 @@
 				<input type="text" value="" data-name="s_server" @input="getSetData" placeholder="请填写供货商服务" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
-				<label>价格</label>
+				<label>价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 格</label>
 				<input type="number" value="" data-name="price" @input="getSetData" placeholder="请填写价格" placeholder-class="placeholderSty" />
 			</view>
       <view class="item">
-      	<label>行业分类</label>
+      	<label>行 业 分 类</label>
       	<input type="text" value="" data-name="classify" @input="getSetData" placeholder="请填写行业分类" placeholder-class="placeholderSty" />
       </view>
 		</view>
@@ -28,15 +28,15 @@
 				<input type="text" value="" data-name="address" @input="getSetData" placeholder="请填写联系人地址" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
-				<label style="letter-spacing: 3upx;">联 系 人</label>
+				<label>联&nbsp;&nbsp; 系&nbsp;&nbsp; 人</label>
 				<input type="text" value="" data-name="name" @input="getSetData" placeholder="请填写联系人" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
-				<label>联系电话</label>
+				<label>联 系 电 话</label>
 				<input type="number" value="" data-name="mobile" @input="getSetData" placeholder="请填写联系电话" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item" style="align-items: flex-start;">
-				<label>图片上传</label>
+				<label>图 片 上 传</label>
 				<view class="imgList">
 					<image :src="item" mode="" v-for="(item, index) in imagesShow" :key="index"></image>
 					<image src="../../static/img/img3.png" mode="" @tap="uploadImg" v-if="images.length < 9"></image>
@@ -223,7 +223,7 @@ page {
 			}
 		}
 		input {
-			width: 500upx;
+			width: 480upx;
 			border: 1upx solid #dddddd;
 			border-radius: 6upx;
 			padding: 16upx 20upx;
@@ -232,7 +232,7 @@ page {
 			// height: 64upx;
 		}
 		.pickerT{
-			width: 500upx;
+			width: 480upx;
 			border: 1upx solid #dddddd;
 			border-radius: 6upx;
 			padding: 16upx 20upx;
@@ -260,7 +260,7 @@ page {
 			height: 200upx;
 		}
 		.imgList {
-			width: 540upx;
+			width: 520upx;
 			display: flex;
 			display: flex;
 			align-items: center;

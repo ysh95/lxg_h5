@@ -113,7 +113,7 @@ export default {
 										filePath: item.path,
 										name: 'image',
                     formData: {
-                      disk: 'supplier'
+                      disk: 'needskill'
                     },
 										header: {
 											// Authorization: this.$parent.globalData.token

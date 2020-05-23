@@ -2,36 +2,36 @@
 	<view class="post">
 		<view class="form">
       <view class="item" style="align-items: flex-start;">
-      	<label>头   像</label>
+      	<label style="letter-spacing: 1upx;">头&nbsp;&nbsp;&nbsp;&nbsp;    像</label>
       	<view class="imgList">
       		<image :src="item" @tap="uploadImg" mode="" v-for="(item, index) in imagesShow" :key="index"></image>
       		<image src="../../static/img/img3.png" mode="" @tap="uploadImg" v-if="images.length == 0"></image>
       	</view>
       </view>
 			<view class="item">
-				<label>姓    名</label>
+				<label style="letter-spacing: 1upx;">姓&nbsp;&nbsp;&nbsp;&nbsp;     名</label>
 				<input type="text" value="" data-name="name" @input="getSetData" placeholder="请填写姓名" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
-				<label>地   址</label>
+				<label style="letter-spacing: 1upx;">地&nbsp;&nbsp;&nbsp;&nbsp;    址</label>
 				<input type="text" value="" data-name="address" @input="getSetData" placeholder="请填写地址" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
-				<label>技   能</label>
+				<label style="letter-spacing: 1upx;">技&nbsp;&nbsp;&nbsp;&nbsp;    能</label>
 				<input type="text" value="" data-name="skill" @input="getSetData" placeholder="请填写技能" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
-				<label>薪   资</label>
+				<label style="letter-spacing: 1upx;">薪&nbsp;&nbsp;&nbsp;&nbsp; 资</label>
 				<input type="number" value="" data-name="price" @input="getSetData" placeholder="请填写薪资" placeholder-class="placeholderSty" />
 			</view>
       <view class="item">
-      	<label>经   验</label>
+      	<label style="letter-spacing: 1upx;">经&nbsp;&nbsp;&nbsp;&nbsp; 验</label>
       	<input type="number" value="" data-name="experience" @input="getSetData" placeholder="请填写经验" placeholder-class="placeholderSty" />
       </view>
 		</view>
 		<view class="form">
 			<view class="item">
-				<label>联 系 人</label>
+				<label style="letter-spacing: 2upx;">联 系 人</label>
 				<input type="text" value="" data-name="contacts" @input="getSetData" placeholder="请填写联系人" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
@@ -108,7 +108,7 @@ export default {
 										filePath: item.path,
 										name: 'image',
                     formData: {
-                      disk: 'supplier'
+                      disk: 'myskill'
                     },
 										header: {
 											// Authorization: this.$parent.globalData.token
