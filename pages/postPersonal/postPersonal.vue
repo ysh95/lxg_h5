@@ -26,7 +26,7 @@
 			</view>
       <view class="item">
       	<label>经   验</label>
-      	<input type="text" value="" data-name="experience" @input="getSetData" placeholder="请填写经验" placeholder-class="placeholderSty" />
+      	<input type="number" value="" data-name="experience" @input="getSetData" placeholder="请填写经验" placeholder-class="placeholderSty" />
       </view>
 		</view>
 		<view class="form">
