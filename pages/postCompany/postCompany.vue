@@ -1,72 +1,191 @@
 <template>
 	<view class="post">
 		<view class="form">
+      <view class="item" style="align-items: flex-start;">
+      	<label>公司LOGO</label>
+      	<view class="imgList">
+      		<image :src="item" @tap="uploadImg" mode="" v-for="(item, index) in imagesShow" :key="index"></image>
+      		<image src="../../static/img/img3.png" mode="" @tap="uploadImg" v-if="images.length == 0"></image>
+      	</view>
+      </view>
 			<view class="item">
 				<label>公司名称</label>
-				<input type="text" value="" data-name='name' @input="inputValue" placeholder="请填写岗位名称" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="name" @input="getSetData" placeholder="请填写公司名称" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>公司地址</label>
-				<input type="text" value="" placeholder="请填写公司地址" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="address" @input="getSetData" placeholder="请填写公司地址" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
-				<label>开设项目</label>
-				<input type="text" value="" placeholder="请填写开设项目" placeholder-class="placeholderSty" />
+				<label>项目</label>
+				<input type="text" value="" data-name="project" @input="getSetData" placeholder="请填写项目" placeholder-class="placeholderSty" />
 			</view>
 			<view class="item">
 				<label>每日成本</label>
-				<input type="text" value="" placeholder="请填写每日成本" placeholder-class="placeholderSty" />
+				<input type="number" value="" data-name="price" @input="getSetData" placeholder="请填写每日成本" placeholder-class="placeholderSty" />
 			</view>
-			<view class="item">
-				<label>行业经验</label>
-				<picker @change="bindPickerChange" :value="index" :range="array">
-					<view class="pickerT">
-						<view class="uni-input">{{ array[index] }}</view>
-						<image src="../../static/img/img48.png" mode=""></image>
-					</view>
-					
-				</picker>
-			</view>
+      <view class="item">
+      	<label>行业经验</label>
+      	<input type="number" value="" data-name="experience" @input="getSetData" placeholder="请填写行业经验" placeholder-class="placeholderSty" />
+      </view>
 		</view>
 		<view class="form">
 			<view class="item">
-				<label>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 名</label>
-				<input type="text" value="" placeholder="请填写姓名" placeholder-class="placeholderSty" />
-			</view>
-			<view class="item">
 				<label>岗位名称</label>
-				<input type="number" value="" placeholder="请填写岗位名称" placeholder-class="placeholderSty" />
+				<input type="text" value="" data-name="post_name" @input="getSetData" placeholder="请填写联系人" placeholder-class="placeholderSty" />
 			</view>
+      <view class="item">
+      	<label>联 系 人</label>
+      	<input type="text" value="" data-name="contacts" @input="getSetData" placeholder="请填写联系人" placeholder-class="placeholderSty" />
+      </view>
 			<view class="item">
 				<label>联系电话</label>
-				<input type="number" value="" placeholder="请填写联系电话" placeholder-class="placeholderSty" />
+				<input type="number" value="" data-name="mobile" @input="getSetData" placeholder="请填写联系电话" placeholder-class="placeholderSty" />
 			</view>
-
+			
 		</view>
 		<view class="btn" @tap="submit">发布</view>
 	</view>
 </template>
 
 <script>
+import { login, ajax, formatDate } from '@/static/js/base.js';
+import api from '@/static/js/api.js';
 export default {
 	data() {
 		return {
-			array: ['中国', '美国', '巴西', '日本'],
-			index: 0,
-			formNode:{
-				name: ''
-			}
+			URL: '',
+			IMG_URL: '',
+			formNode: {
+			  name: '',
+			  address: '',
+			  project: '',
+			  price: '',
+			  experience	: '',
+			  logo: '',
+			  post_name: '',
+        contacts: '',
+			  mobile: ''
+			},
+			images: [], // 仅用于上传
+			imagesShow: [] // 仅用于显示
 		};
 	},
+  onLoad(options) {
+  	const that = this;
+  	that.options = options;
+  	that.URL = api.URL;
+  	that.IMG_URL = api.IMG_URL;
+  },
 	methods: {
-		inputValue(e){
-			let formNode = this.formNode
-			let name = e.currentTarget.dataset.name
-			let value = e.detail.value
-			formNode[name] = value
-			this.formNode = formNode
-			console.log(this.formNode)
-		}
+		// 表单数据获取
+		getSetData(e) {
+			let formNode = this.formNode;
+			let name = e.currentTarget.dataset.name;
+			let value = e.detail.value;
+			formNode[name] = value;
+			this.formNode = formNode;
+		},
+		uploadImg() {
+			const that = this;
+			wx.chooseImage({
+				count: 1,
+				sizeType: ['original', 'compressed'],
+				sourceType: ['album', 'camera'],
+				success: res => {
+					uni.showToast({
+						title: '图片上传中',
+						icon: 'loading'
+					});
+					Promise.all(
+						res.tempFiles.map(item => {
+							return new Promise((resolve, reject) => {
+								if (item.size > 10000000) {
+									// if (item.size > 500) {
+									uni.showToast({
+										title: '上传图片不能大于5兆',
+										icon: 'none',
+										duration: 2000
+									});
+								} else {
+									uni.uploadFile({
+										url: api.home_upload_img,
+										filePath: item.path,
+										name: 'image',
+                    formData: {
+                      disk: 'supplier'
+                    },
+										header: {
+											// Authorization: this.$parent.globalData.token
+										},
+										success: res => {
+											resolve({
+												path: JSON.parse(res.data).data
+											});
+										}
+									});
+								}
+							});
+						})
+					)
+						.then(e => {
+							uni.hideToast();
+							let imageShow = that.imagesShow;
+							let image = that.images;
+							for (let i = 0; i < e.length; i++) {
+								imageShow.push(`${that.IMG_URL}/${e[i].path}`);
+								image.push(e[i].path);
+							}
+							that.imagesShow = imageShow;
+							that.images = image;
+						})
+						.catch(err => console.log(err));
+				}
+			});
+		},
+    submit() {
+      const that = this
+      let formNode = that.formNode
+      formNode.logo = that.images.toString()
+      // 非空校验
+      for (let key in formNode) {
+        if (!formNode[key]) {
+          uni.showToast({
+              title: '请完善提交信息',
+              duration: 2000
+          });
+          return false
+        }
+      }
+      if (formNode.mobile.length != 11) {
+        uni.showToast({
+            title: '请完输入完整的手机号',
+            duration: 2000
+        });
+        return false
+      }
+      ajax({
+      	url: `${that.URL}/api/addNeedSkill`,
+      	type: "POST",
+        data: formNode
+      }).then(res => {
+      	if (res.status_code == "ok") {
+          uni.showToast({
+            title: '发布成功',
+            icon: 'success',
+            duration: 2000
+          });
+          setTimeout(() => {
+            uni.navigateBack()
+          }, 2000)
+      	} else {
+          uni.showToast({
+            title: res.message,
+            duration: 2000
+          });
+        }
+      })
+    }
 	}
 };
 </script>
@@ -140,11 +259,17 @@ page {
 		.imgList {
 			width: 540upx;
 			display: flex;
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			flex-direction: row;
+			flex-wrap: wrap;
 			image {
-				width: 102upx;
-				height: 96upx;
+				width: 134upx;
+				height: 134upx;
 				// background-color: #007AFF;
-				margin-right: 10upx;
+				margin-right: 47upx;
+				margin-bottom: 30upx;
 			}
 		}
 	}
