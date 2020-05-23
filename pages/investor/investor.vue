@@ -1,49 +1,81 @@
 <template>
 	<view class="investor">
-		<view class="content">
-			<block v-for="(item,index) in list" :key='index'>
-				<view class="item" @tap="go()">
-					<view class="top">
-						<text>{{item.name}}</text>
-						<text>投资金额：{{item.money}}</text>
+		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption">
+			<view class="content">
+				<block v-for="(item,index) in list" :key='index'>
+					<view class="item" @tap="go(item.id)">
+						<view class="top">
+							<text>{{item.contacts}}</text>
+							<text>投资金额：{{item.price}}</text>
+						</view>
+						<view class="itemContent">
+							<label for="">投资行业:</label>
+							<text>{{item.industry}}</text>
+						</view>
+						<view class="itemContent">
+							<label for="">投资方式:</label>
+							<text>{{item.way}}</text>
+						</view>
+						<view class="itemContent">
+							<label for="">投资地区:</label>
+							<text>{{item.address}}</text>
+						</view>
 					</view>
-					<view class="itemContent">
-						<label for="">投资行业:</label>
-						<text>{{item.trade}}</text>
-					</view>
-					<view class="itemContent">
-						<label for="">投资方式:</label>
-						<text>{{item.type}}</text>
-					</view>
-					<view class="itemContent">
-						<label for="">投资地区:</label>
-						<text>{{item.adder}}</text>
-					</view>
-				</view>
-			</block>
-		</view>
+				</block>
+			</view>
+		</mescroll-uni>
 		<navigator url="../posTinvestor/posTinvestor" class="btn">发布投资人</navigator>
 	</view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				list:[
-					{name: '后裔',money: '200万元',type: '债券投资',trade: '房地产',adder: '陕西省-高新区'},
-					{name: '后裔',money: '200万元',type: '债券投资',trade: '房地产',adder: '陕西省-高新区'}
-				]
-			}
+import { ajax } from '@/static/js/base.js';
+import api from '@/static/js/api.js';
+import { mapGetters } from 'vuex';
+export default {
+	data() {
+		return {
+			upOption: {
+				textNoMore: '木有更多了', // 没有更多数据的提示文本
+				empty: {
+					tip: '~ 暂无内容 ~'
+				}
+			},
+			list: []
+		};
+	},
+	onShow() {
+		this.canReset && this.mescroll && this.mescroll.resetUpScroll();
+		this.canReset = true; // 过滤第一次的onShow事件,避免初始化界面时重复触发upCallback
+	},
+	methods: {
+		upCallback(mescroll) {
+			this.getList(mescroll, curPageData => {
+				mescroll.endSuccess(curPageData.length, false);
+				if (mescroll.num == 1) this.list = []; //如果是第一页需手动制空列表
+				this.list = this.list.concat(curPageData);
+			});
 		},
-		methods: {
-			go(){
-				uni.navigateTo({
-					url:'../investorDetail/investorDetail'
-				})
-			}
+		getList(mescroll, cb) {
+			ajax({
+				url: api.getInvestment,
+				type: 'GET',
+				data: {
+					page_size: 10,
+					page: mescroll.num
+				}
+			}).then(res => {
+				var list = res.data.data || [];
+				cb(list);
+			});
+		},
+		go(e) {
+			uni.navigateTo({
+				url: `../investorDetail/investorDetail?id=${e}`
+			});
 		}
 	}
+};
 </script>
 
 <style lang="scss">

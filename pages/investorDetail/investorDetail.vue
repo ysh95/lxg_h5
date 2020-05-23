@@ -4,53 +4,58 @@
 			<view class="title">股权/投资介绍</view>
 			<view class="every four">
 				<label>姓名：</label>
-				<text>123</text>
+				<text>{{info.contacts}}</text>
 			</view>
 			<view class="every four">
 				<label>所属行业：</label>
-				<text>123</text>
+				<text>{{info.industry}}</text>
 			</view>
 			<view class="every four">
 				<label>投资方式：</label>
-				<text>123</text>
+				<text>{{info.way}}</text>
 			</view>
 			<view class="every four">
 				<label>投资地区：</label>
-				<text>123</text>
+				<text>{{info.address}}</text>
 			</view>
 			<view class="every four">
 				<label>投资金额：</label>
-				<text>123</text>
+				<text>{{info.price}}</text>
 			</view>
 		</view>
 		<view class="item">
 			<view class="title">联系方式</view>
 			<view class="every">
 				<label>联系方式：</label>
-				<text>123</text>
+				<text>{{info.mobile}}</text>
 			</view>
 			<view class="every">
 				<label>联系地址：</label>
-				<text>123</text>
+				<text>{{info.company}}</text>
 			</view>
 			
 		</view>
 		<view class="submit">
-			<text>获取联系方式</text>
-			<text>我要留言</text>
+			<text @tap="getDetail(1)">获取联系方式</text>
+			<text @tap="postMeaasge(2)">我要留言</text>
 		</view>
-		<!-- <view class="btn" @tap="submit">获取联系方式</view> -->
-		
 		<uni-popup ref="popup" type="center">
 			<view class="vip-box">
 				<view class="close" @click="close">×</view>
-				<view class="text">
+				<view class="text" v-if="typeId == 1">
 					<text>发布信息</text>
 					<text>请先发布一条供求信息，即可查看联 系方式</text>
 				</view>
+				<view class="text" v-if="typeId == 2">
+					<view class="textarea">
+						<textarea value="" placeholder="" @input="inputValue" maxlength="200"/>
+						<text>{{current}}/200</text>
+					</view>
+				</view>
 				<view class="fot">
-					<view @click="navMembership">立即发布</view>
-					<view class="cancel" @click="close">取消开通</view>
+					<view v-if="typeId == 1" @click="navMembership">立即发布</view>
+					<view v-if="typeId == 2" @click="post()">立即发布</view>
+					<view class="cancel" @click="close">取消发布</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -58,23 +63,101 @@
 </template>
 
 <script>
-	
-export default {
-	data() {
-		return {};
-	},
-	methods: {
-		open(){
-			 this.$refs.popup.open()
+	import { ajax } from '@/static/js/base.js';
+	import api from '@/static/js/api.js';
+	import { mapGetters } from 'vuex';
+	export default {
+		data() {
+			return {
+				info: {},
+				typeId: '',
+				current: 0
+			};
 		},
-		submit() {
-			this.$refs.popup.open()
+		onLoad(e) {
+			this.id = e.id;
+			ajax({
+				url: api.getInvestmentInfo,
+				type: 'POST',
+				data: {
+					id: this.id
+				}
+			}).then(res => {
+				if (res.status_code == 'ok') {
+					console.log(res);
+					this.info = res.data;
+				}
+			});
 		},
-		close() {
-			this.$refs.popup.close()
-		},
-	}
-};
+		methods: {
+			getDetail(e) {
+				this.typeId = e;
+				ajax({
+					url: api.getInvestmentDetails,
+					type: 'POST',
+					data: {
+						id: this.id
+					}
+				}).then(res => {
+					if (res.status_code == 'ok') {
+						console.log(res);
+						this.info.mobile = res.data.mobile;
+					} else if (res.status_code == 'error') {
+						this.$refs.popup.open();
+					} else {
+						uni.showToast({
+							title: res.message,
+							icon: 'none'
+						});
+					}
+				});
+			},
+			close() {
+				this.$refs.popup.close();
+			},
+			navMembership() {
+				uni.navigateTo({
+					url: '../posTinvestor/posTinvestor'
+				});
+				this.$refs.popup.close();
+			},
+			postMeaasge(e) {
+				this.typeId = e;
+				this.$refs.popup.open();
+			},
+			inputValue(e) {
+				var len = parseInt(e.detail.value.length);
+				// if (len > 200) return;
+				console.log(len)
+				this.content = e.detail.value
+				this.current = len
+			},
+			post(){
+				ajax({
+					url: api.addMessage,
+					type: 'POST',
+					data: {
+						content: this.content
+					}
+				}).then(res => {
+					if (res.status_code == 'ok') {
+						console.log(res);
+						uni.showToast({
+							title: res.message,
+							icon: 'none'
+						});
+						this.$refs.popup.close();
+						// this.info.mobile = res.data.mobile;
+					}else {
+						uni.showToast({
+							title: res.message,
+							icon: 'none'
+						});
+					}
+				});
+			}
+		}
+	};
 </script>
 
 <style lang="scss">
@@ -252,6 +335,28 @@ page {
 			background-color: #007AFF;
 			color: #FFFFFF;
 		}
+	}
+}
+.textarea {
+	// background-color: #C0C0C0;
+	width: 89%;
+	margin-top: 14upx;
+	border: 1upx solid #eee;
+	border-radius: 6upx;
+	padding: 20upx 20upx 0;
+	text-align: left;
+	color: #565656;
+	font-size: 28upx;
+	textarea{
+		width: 100%;
+		text-align: justify;
+	}
+	text{
+		text-align: right !important;
+		color: #C0C0C0;
+		font-weight: 200;
+		font-size: 26upx;
+		display: block;
 	}
 }
 </style>

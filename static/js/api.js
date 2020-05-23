@@ -67,6 +67,12 @@ module.exports = {
 	getFinancingInfo: URL + '/api/getFinancingInfo',
 	// 获取联系方式
 	getFinancingDetails: URL + '/api/getFinancingDetails',
+	// 投资列表
+	getInvestment: URL + '/api/getInvestment',
+	// 详情
+	getInvestmentInfo: URL + '/api/getInvestmentInfo',
+	// 获取联系方式
+	getInvestmentDetails: URL + '/api/getInvestmentDetails',
 	
 	
 	// 求购分类推荐入口
