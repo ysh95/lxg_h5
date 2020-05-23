@@ -247,9 +247,7 @@ export default {
       	type: "POST",
         data: formNode
       }).then(res => {
-        console.log(res)
       	if (res.status_code == "ok") {
-      		let bannerArr = res.data
           uni.showToast({
             title: '发布成功',
             icon: 'success',
