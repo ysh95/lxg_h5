@@ -93,7 +93,6 @@ import api from '@/static/js/api.js';
 export default {
 	data() {
 		return {
-      file:'file',
 			URL: '',
 			IMG_URL: '',
 			formNode: {
