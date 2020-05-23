@@ -3,7 +3,7 @@
 		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="0upx">
 		<view class="content">
 			<block v-for="(item,index) in list" :key='index'>
-				<view class="item" @tap="go()">
+				<view class="item" @tap="go(item.id)">
 					<view class="top">
 						<text>{{item.loan_name}}</text>
 						<text>投资金额：{{item.amount_of_money}}</text>
@@ -73,9 +73,9 @@
 					cb(list);
 				});
 			},
-			go(){
+			go(e){
 				uni.navigateTo({
-					url:'../borrowerDetail/borrowerDetail'
+					url:`../borrowerDetail/borrowerDetail?id=${e}`
 				})
 			}
 		}

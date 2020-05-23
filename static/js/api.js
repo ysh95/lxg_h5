@@ -37,6 +37,13 @@ module.exports = {
 	getLoan: URL + '/api/getLoan',
 	//  发布
 	addLoan: URL + '/api/addLoan',
+	// xiangqing
+	getLoanInfo: URL + '/api/getLoanInfo',
+	// 获取联系方式
+	getLoanDetails: URL + '/api/getLoanDetails',
+	// 留言
+	addMessage: URL + '/api/addMessage',
+	
 	// 求购分类推荐入口
 	home_push: URL + '/api/getTopNavigationBars',
 	// 求购分类默认入口
