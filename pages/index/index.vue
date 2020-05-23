@@ -20,7 +20,7 @@
 			<!-- 顶部导航 -->
 			<view class="classify">
 				<block v-for="(item, index) in classifyArr" :key="index">
-					<navigator class="classify-item" hover-class="none" :url="item.url + '?id=' + item.id">
+					<navigator class="classify-item" hover-class="none" :url="'/' + item.url + '?id=' + item.id">
 						<image :src="item.icon"></image>
 						<text>{{item.title}}</text>
 					</navigator>
@@ -123,7 +123,6 @@
 			// 		}
 			// 	}
 			// })
-			
 			// 首页banner请求
 			ajax({
 				url: api.index_banner,
