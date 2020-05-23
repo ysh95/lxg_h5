@@ -179,7 +179,6 @@ export default {
 					Promise.all(
 						res.tempFiles.map(item => {
 							return new Promise((resolve, reject) => {
-								console.log(item);
 								if (item.size > 10000000) {
 									// if (item.size > 500) {
 									uni.showToast({
@@ -192,6 +191,9 @@ export default {
 										url: api.home_upload_img,
 										filePath: item.path,
 										name: 'image',
+                    formData: {
+                      disk: 'purchase'
+                    },
 										header: {
 											// Authorization: this.$parent.globalData.token
 										},
@@ -207,7 +209,6 @@ export default {
 					)
 						.then(e => {
 							uni.hideToast();
-							console.log(e);
 							let imageShow = that.imagesShow;
 							let image = that.images;
 							for (let i = 0; i < e.length; i++) {
