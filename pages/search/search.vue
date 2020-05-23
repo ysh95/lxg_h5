@@ -1,8 +1,8 @@
 <template>
-	<view class="indexRecruit">
+	<view class="searchBox">
 		<view class="searsh">
 			<image src="../../static/img/img4.png" mode=""></image>
-			<input type="text" value="" placeholder="请输入搜索内容" disabled="disabled" @tap="goSearch(1)"/>
+			<input type="text" value="" @input="bindInput" @confirm="searchHanld()" placeholder="搜索" placeholder-class="searchTip" />
 		</view>
 		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="36upx" bottom='30upx'>
 		<view class="content">
@@ -23,75 +23,70 @@
 			</block>
 		</view>
 		</mescroll-uni>
-		<view class="btn" @tap="post()">发布项目</view>
-		<!-- <view class="btn" v-else @tap="post(1)">发布求职信息</view> -->
 	</view>
 </template>
 
 <script>
-import { ajax } from '@/static/js/base.js';
-import api from '@/static/js/api.js';
-import { mapGetters } from 'vuex';
-export default {
-	data() {
-		return {
-			upOption: {
-				textNoMore: '木有更多了', // 没有更多数据的提示文本
-				empty: {
-					tip: '~ 暂无内容 ~'
-				}
+	import { ajax } from '@/static/js/base.js';
+	import api from '@/static/js/api.js';
+	export default {
+		data() {
+			return{
+				upOption: {
+					textNoMore: '木有更多了', // 没有更多数据的提示文本
+					empty: {
+						tip: '~ 暂无数据 ~', // 提示
+					},
+					auto: false,
+				},
+				downOption: {
+					auto: false,
+					use: false, 
+				},
+				list: [],
+				title: '',
+			}
+		},
+		methods: {
+			bindInput(e) {
+				console.log(e)
+				this.inputValue = e.detail.value;
+				// if (this.inputValue == '') {
+				// 	this.mask = true;
+				// }
 			},
-			list: []
-		};
-	},
-	onShow() {
-		this.canReset && this.mescroll && this.mescroll.resetUpScroll();
-		this.canReset = true; // 过滤第一次的onShow事件,避免初始化界面时重复触发upCallback
-	},
-	methods: {
-		upCallback(mescroll) {
-			this.getList(mescroll, curPageData => {
-				mescroll.endSuccess(curPageData.length, false);
-				if (mescroll.num == 1) this.list = []; //如果是第一页需手动制空列表
-				this.list = this.list.concat(curPageData);
-			});
-		},
-		getList(mescroll, cb) {
-			ajax({
-				url: api.getProject,
-				type: 'GET',
-				data: {
-					page_size: 10,
-					page: mescroll.num
-				}
-			}).then(res => {
-				var list = res.data.data || [];
-				cb(list);
-			});
-		},
-		post(e) {
-			uni.navigateTo({
-				url: '../postProject/postProject'
-			});
-		},
-		go(e) {
-			uni.navigateTo({
-				url: `../goodProjectDetail/goodProjectDetail?id=${e}`
-			});
-		},
-		goSearch(e){
-			uni.navigateTo({
-				url:'../search/search?type=${e}'
-			})
+			upCallback(mescroll) {
+				this.getList(mescroll, curPageData => {
+					mescroll.endSuccess(curPageData.length, false);
+					if (mescroll.num == 1) this.list = []; //如果是第一页需手动制空列表
+					this.list = this.list.concat(curPageData);
+				});
+			},
+			getList(mescroll, cb){
+				ajax({
+					url: api.projectSearch,
+					type: 'POST',
+					data: {
+						page_size: 10,
+						page: mescroll.num,
+						post_name: this.inputValue
+					}
+				}).then(res => {
+					var list = res.data.data || [];
+					cb(list);
+				});
+			},
+			searchHanld(e) {
+				// if(this.title) {
+					// this.fid = ''
+					this.mescroll.resetUpScroll()
+				// }
+			}
 		}
 	}
-};
 </script>
 
 <style lang="scss">
-page {
-	// background-color: #F6F6F6;
-}
 .searsh {
 	width: 660upx;
 	margin: 0 26upx;
@@ -108,22 +103,6 @@ page {
 	image {
 		width: 28upx;
 		height: 28upx;
-	}
-}
-.tab {
-	width: 750upx;
-	// padding: 0 126upx;
-	display: flex;
-	justify-content: space-around;
-	height: 80upx;
-	line-height: 80upx;
-	text {
-		font-size: 30upx;
-		color: #343434;
-	}
-	.title-sel {
-		color: #0076ff;
-		border-bottom: 4upx solid #007aff;
 	}
 }
 .content {
