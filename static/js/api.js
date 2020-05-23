@@ -61,6 +61,12 @@ module.exports = {
 	getMySkillInfo: URL + '/api/getMySkillInfo',
 	// 联系方式
 	getMySkillDetails: URL + '/api/getMySkillDetails',
+	// 融资列表
+	getFinancing: URL + '/api/getFinancing',
+	// 详情
+	getFinancingInfo: URL + '/api/getFinancingInfo',
+	// 获取联系方式
+	getFinancingDetails: URL + '/api/getFinancingDetails',
 	
 	
 	// 求购分类推荐入口

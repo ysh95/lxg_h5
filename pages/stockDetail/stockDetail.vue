@@ -4,96 +4,102 @@
 			<view class="title">股权/投资介绍</view>
 			<view class="every four">
 				<label>项目名称：</label>
-				<text>123</text>
+				<text>{{info.project_name}}</text>
 			</view>
 			<view class="every four">
 				<label>所属行业：</label>
-				<text>123</text>
+				<text>{{info.industry}}</text>
 			</view>
 			<view class="every four">
 				<label>所属属性：</label>
-				<text>123</text>
+				<text>{{info.nature}}</text>
 			</view>
 			<view class="every four">
 				<label>融资主体：</label>
-				<text>123</text>
+				<text>{{info.subject}}</text>
 			</view>
 			<view class="every four">
 				<label>投资金额：</label>
-				<text>123</text>
+				<text>{{info.amount_of_money}}</text>
 			</view>
 		</view>
 		<view class="item">
 			<view class="title">营收</view>
 			<view class="every">
 				<label>所 在 地 区：</label>
-				<text>123</text>
+				<text>{{info.address}}</text>
 			</view>
 			<view class="every">
 				<label>去年营业额：</label>
-				<text>123</text>
+				<text>{{info.turnover}}</text>
 			</view>
 			<view class="every">
 				<label>企业净资产：</label>
-				<text>123</text>
+				<text>{{info.assets}}</text>
 			</view>
 			<view class="every">
 				<label>融 资 金 额：</label>
-				<text>123</text>
+				<text>{{info.financing_amount}}</text>
 			</view>
 			<view class="every">
 				<label>总 投 金 额：</label>
-				<text class="textLine">少时诵诗</text>
+				<text class="textLine">{{info.total_financing_amount}}</text>
 			</view>
 		</view>
 		<view class="item" style="margin-bottom: 110upx;">
 			<view class="title">联系人/项目详情</view>
 			<view class="every four">
 				<label>融资用途：</label>
-				<text>123</text>
+				<text>{{info.purpose}}</text>
 			</view>
 			<view class="every four">
 				<label>意向资金：</label>
-				<text>123</text>
+				<text>{{info.intention}}</text>
 			</view>
 			<view class="every four">
 				<label style="letter-spacing: 2upx;">联 系 人：</label>
-				<text>123</text>
+				<text>{{info.contacts}}</text>
+			</view>
+			<view class="every four">
+				<label>联系方式：</label>
+				<text>{{info.mobile}}</text>
 			</view>
 			<view class="every four">
 				<label>融资方式：</label>
-				<text>123</text>
+				<text>{{info.financing_mode}}</text>
 			</view>
 			<view class="every four" style="align-items: flex-start;">
 				<label>项目概述：</label>
-				<text class="textLine">少时诵诗书所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所</text>
+				<text class="textLine">{{info.summary}}</text>
 			</view>
 			<view class="every four" style="align-items: flex-start;">
 				<label style="letter-spacing: 2upx;">计 划 书：</label>
 				<view class="img">
-					<image src="../../static/logo.png" mode=""></image>
-					<image src="../../static/logo.png" mode=""></image>
-					<image src="../../static/logo.png" mode=""></image>
-					<image src="../../static/logo.png" mode=""></image>
+					<image v-for="(item,index) in info.file" :src="IMG_URL+item" mode=""></image>
 				</view>
 			</view>
 		</view>
 		<view class="bottom">
-			<text>获取联系方式</text>
-			<text>我要留言</text>
+			<text @tap="getDetail(1)">获取联系方式</text>
+			<text @tap="postMeaasge(2)">我要留言</text>
 		</view>
-		<!-- <view class="btn" @tap="submit">获取联系方式</view> -->
-		
 		<uni-popup ref="popup" type="center">
 			<view class="vip-box">
 				<view class="close" @click="close">×</view>
-				<view class="text">
+				<view class="text" v-if="typeId == 1">
 					<text>发布信息</text>
 					<text>请先发布一条供求信息，即可查看联 系方式</text>
 				</view>
+				<view class="text" v-if="typeId == 2">
+					<view class="textarea">
+						<textarea value="" placeholder="" @input="inputValue" maxlength="200"/>
+						<text>{{current}}/200</text>
+					</view>
+				</view>
 				<view class="fot">
-					<view @click="navMembership">立即发布</view>
-					<view class="cancel" @click="close">取消开通</view>
+					<view v-if="typeId == 1" @click="navMembership">立即发布</view>
+					<view v-if="typeId == 2" @click="post()">立即发布</view>
+					<view class="cancel" @click="close">取消发布</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -102,20 +108,99 @@
 
 <script>
 	
+import { ajax } from '@/static/js/base.js';
+import api from '@/static/js/api.js';
+import { mapGetters } from 'vuex';
 export default {
 	data() {
-		return {};
+		return {
+			info: {},
+			typeId: '',
+			current: 0
+		};
+	},
+	onLoad(e) {
+		this.id = e.id;
+		ajax({
+			url: api.getFinancingInfo,
+			type: 'POST',
+			data: {
+				id: this.id
+			}
+		}).then(res => {
+			if (res.status_code == 'ok') {
+				console.log(res);
+				this.info = res.data;
+			}
+		});
 	},
 	methods: {
-		open(){
-			 this.$refs.popup.open()
-		},
-		submit() {
-			this.$refs.popup.open()
+		getDetail(e) {
+			this.typeId = e;
+			ajax({
+				url: api.getFinancingDetails,
+				type: 'POST',
+				data: {
+					id: this.id
+				}
+			}).then(res => {
+				if (res.status_code == 'ok') {
+					console.log(res);
+					this.info.mobile = res.data.mobile;
+				} else if (res.status_code == 'error') {
+					this.$refs.popup.open();
+				} else {
+					uni.showToast({
+						title: res.message,
+						icon: 'none'
+					});
+				}
+			});
 		},
 		close() {
-			this.$refs.popup.close()
+			this.$refs.popup.close();
 		},
+		navMembership() {
+			uni.navigateTo({
+				url: '../postStock/postStock'
+			});
+			this.$refs.popup.close();
+		},
+		postMeaasge(e) {
+			this.typeId = e;
+			this.$refs.popup.open();
+		},
+		inputValue(e) {
+			var len = parseInt(e.detail.value.length);
+			// if (len > 200) return;
+			console.log(len)
+			this.content = e.detail.value
+			this.current = len
+		},
+		post(){
+			ajax({
+				url: api.addMessage,
+				type: 'POST',
+				data: {
+					content: this.content
+				}
+			}).then(res => {
+				if (res.status_code == 'ok') {
+					console.log(res);
+					uni.showToast({
+						title: res.message,
+						icon: 'none'
+					});
+					this.$refs.popup.close();
+					// this.info.mobile = res.data.mobile;
+				}else {
+					uni.showToast({
+						title: res.message,
+						icon: 'none'
+					});
+				}
+			});
+		}
 	}
 };
 </script>
@@ -302,6 +387,28 @@ page {
 			color: #FFFFFF;
 			border: none;
 		}
+	}
+}
+.textarea {
+	// background-color: #C0C0C0;
+	width: 89%;
+	margin-top: 14upx;
+	border: 1upx solid #eee;
+	border-radius: 6upx;
+	padding: 20upx 20upx 0;
+	text-align: left;
+	color: #565656;
+	font-size: 28upx;
+	textarea{
+		width: 100%;
+		text-align: justify;
+	}
+	text{
+		text-align: right !important;
+		color: #C0C0C0;
+		font-weight: 200;
+		font-size: 26upx;
+		display: block;
 	}
 }
 </style>
