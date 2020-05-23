@@ -73,7 +73,12 @@ module.exports = {
 	getInvestmentInfo: URL + '/api/getInvestmentInfo',
 	// 获取联系方式
 	getInvestmentDetails: URL + '/api/getInvestmentDetails',
-	
+	// 供货商列表
+	getSupplier: URL + '/api/getSupplier',
+	// 详情
+	getSupplierInfo: URL + '/api/getSupplierInfo',
+	// 获取联系方式
+	getSupplierDetails: URL + '/api/getSupplierDetails',
 	
 	// 求购分类推荐入口
 	home_push: URL + '/api/getTopNavigationBars',

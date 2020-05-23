@@ -4,38 +4,38 @@
 			<view class="title">公司介绍</view>
 			<view class="every">
 				<label>供货商名称：</label>
-				<text>123</text>
+				<text>{{info.s_name}}</text>
 			</view>
 			<view class="every">
 				<label>供货商服务：</label>
-				<text>123</text>
+				<text>{{info.s_server}}</text>
 			</view>
 			<view class="every">
 				<label>供货商地址：</label>
-				<text>123</text>
+				<text>{{info.s_address}}</text>
 			</view>
 			<view class="every">
 				<label style="letter-spacing: 0upx;">行 业 分 类：</label>
-				<text>123</text>
+				<text>{{info.classify.name}}</text>
 			</view>
 			<view class="every">
 				<label style="letter-spacing: 5upx;">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 格：</label>
-				<text>123</text>
+				<text>{{info.price}}</text>
 			</view>
 		</view>
 		<view class="item">
 			<view class="title">联系方式</view>
 			<view class="every">
 				<label style="letter-spacing: 2upx;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label>
-				<text>123</text>
+				<text>{{info.name}}</text>
 			</view>
 			<view class="every">
 				<label>联系方式：</label>
-				<text>123</text>
+				<text>{{info.mobile}}</text>
 			</view>
 			<view class="every">
 				<label>联系地址：</label>
-				<text>123</text>
+				<text>{{info.address}}</text>
 			</view>
 		</view>
 		<view class="btn" @tap="submit">获取联系方式</view>
@@ -49,7 +49,7 @@
 				</view>
 				<view class="fot">
 					<view @click="navMembership">立即发布</view>
-					<view class="cancel" @click="close">取消开通</view>
+					<view class="cancel" @click="close">取消发布</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -58,18 +58,63 @@
 
 <script>
 	
+	import { ajax } from '@/static/js/base.js';
+	import api from '@/static/js/api.js';	
 export default {
 	data() {
-		return {};
+		return {
+			info:{},
+		};
+	},
+	onLoad(e) {
+		this.id = e.id
+		ajax({
+			url: api.getSupplierInfo,
+			type: "POST",
+			data: {
+				id: this.id
+			},
+		}).then(res => {
+			if (res.status_code == "ok") {
+				console.log(res)
+				this.info = res.data
+			}
+		})
 	},
 	methods: {
 		open(){
 			 this.$refs.popup.open()
 		},
 		submit() {
-			this.$refs.popup.open()
+			ajax({
+				url: api.getSupplierDetails,
+				type: "POST",
+				data: {
+					id: this.id
+				},
+			}).then(res => {
+				if (res.status_code == "ok") {
+					console.log(res)
+					this.info.mobile = res.data.mobile
+					// this.getInfo()
+					// this.info = res.data
+				}else if(res.status_code == 'error'){
+					this.$refs.popup.open();
+				}else{
+					uni.showToast({
+						title:res.message,
+						icon:'none'
+					})
+				}
+			})
 		},
 		close() {
+			this.$refs.popup.close()
+		},
+		navMembership(){
+			uni.navigateTo({
+				url:'../postSupplier/postSupplier'
+			})
 			this.$refs.popup.close()
 		},
 	}

@@ -128,6 +128,7 @@ export default {
 			uni.navigateTo({
 				url:'../postMakeFri/postMakeFri'
 			})
+			this.$refs.popup.close()
 		},
 	}
 };
