@@ -76,6 +76,7 @@ export default {
   	that.options = options;
   	that.URL = api.URL;
   	that.IMG_URL = api.IMG_URL;
+    
   },
 	methods: {
 		// 表单数据获取

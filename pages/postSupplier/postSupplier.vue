@@ -19,7 +19,9 @@
 			</view>
       <view class="item">
       	<label>行业分类</label>
-      	<input type="text" value="" data-name="classify" @input="getSetData" placeholder="请填写行业分类" placeholder-class="placeholderSty" />
+        <picker @change="selClassify" :value="classifyIndex" :range="classify">
+          <input type="text" :value="classify[classifyIndex]" placeholder="请选择行业分类" placeholder-class="placeholderSty" disabled="false" />
+        </picker>
       </view>
 		</view>
 		<view class="form">
@@ -55,6 +57,9 @@ export default {
 		return {
 			URL: '',
 			IMG_URL: '',
+      classify: [],
+      classifyId: [],
+      classifyIndex: '',
 			formNode: {
 			  s_name: '',
 			  s_address: '',
@@ -75,6 +80,7 @@ export default {
   	that.options = options;
   	that.URL = api.URL;
   	that.IMG_URL = api.IMG_URL;
+    that.getClassify()
   },
 	methods: {
 		// 表单数据获取
@@ -85,6 +91,31 @@ export default {
 			formNode[name] = value;
 			this.formNode = formNode;
 		},
+    selClassify(e) {
+      const that = this
+      let index = e.detail.value
+      that.classifyIndex = index
+      that.formNode.classify = that.classifyId[index]
+    },
+    getClassify() {
+      const that = this
+      ajax({
+        url: `${that.URL}/api/getClassify`,
+        type: "GET",
+      }).then(res => {
+        if (res.status_code == "ok") {
+          let data = res.data
+          let classify = []
+          let classifyId = []
+          for (let i = 0; i < data.length; i++) {
+            classify.push(data[i].name)
+            classifyId.push(data[i].id)
+          }
+          that.classify = classify
+          that.classifyId = classifyId
+        }
+      })
+    },
 		uploadImg() {
 			const that = this;
 			let count = 9 - that.images.length;
@@ -130,7 +161,6 @@ export default {
 					)
 						.then(e => {
 							uni.hideToast();
-							console.log(e);
 							let imageShow = that.imagesShow;
 							let image = that.images;
 							for (let i = 0; i < e.length; i++) {
@@ -148,7 +178,6 @@ export default {
       const that = this
       let formNode = that.formNode
       formNode.image = that.images.toString()
-      console.log(formNode)
       // 非空校验
       for (let key in formNode) {
         if (!formNode[key]) {
@@ -171,7 +200,6 @@ export default {
       	type: "POST",
         data: formNode
       }).then(res => {
-        console.log(res)
       	if (res.status_code == "ok") {
           uni.showToast({
             title: '发布成功',
