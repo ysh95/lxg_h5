@@ -1,6 +1,9 @@
 <template>
 	<view class="investor">
-		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" bottom='60upx'>
+    <view class="notList" v-if="list.length == 0">
+      {{upOption.empty.tip}}
+    </view>
+		<mescroll-uni v-if="list.length > 0" @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" bottom='60upx'>
 			<view class="content">
 				<block v-for="(item,index) in list" :key='index'>
 					<view class="item" @tap="go(item.id)">

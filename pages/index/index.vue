@@ -201,13 +201,17 @@
 						page: mescroll.num,
 					}
 				}).then(res => {
+          console.clear()
 					console.log(res)
-          // var purchasesList = res.data
-					var purchasesList = res.data.data || []
-					// purchasesList.forEach(item => {
-					// 	item.time = formatDate(item.ctime)
-					// })
-					cb(purchasesList)
+          if (res.status_code == 'ok') {
+            // var purchasesList = res.data
+            var purchasesList = res.data.data || []
+            // purchasesList.forEach(item => {
+            // 	item.time = formatDate(item.ctime)
+            // })
+            cb(purchasesList)
+          }
+          
 				})
 			},
 			postWant(){

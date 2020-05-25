@@ -105,4 +105,13 @@
 		background-color: #F6F6F6;
 		height: 20upx;
 	}
+  /* 无列表 */
+  .notList {
+    width: 100%;
+    height: auto;
+    padding: 50rpx 0;
+    font-size: 30rpx;
+    color: #999;
+    text-align: center;
+  }
 </style>
