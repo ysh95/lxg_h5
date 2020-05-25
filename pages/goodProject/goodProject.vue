@@ -11,15 +11,15 @@
 		<view class="content">
 			<block v-for="(item, index) in list" :key="index">
 				<view class="item" @tap="go(item.id)">
-					<image :src="IMG_URL+item.image" mode=""></image>
+					<image :src="IMG_URL+item.image[0]" mode=""></image>
 					<view class="rigth">
 						<view class="top">
 							<text>{{ item.project_name }}</text>
 						</view>
 						<view class="center">{{item.summary}}</view>
 						<view class="bottom">
-							<text>{{ item.amount_of_money }}</text>
-							<text>{{ item.apply_num }}</text>
+							<text>{{ item.amount_of_money }}元</text>
+							<text>{{ item.apply_num }}人申请</text>
 						</view>
 					</view>
 				</view>
@@ -47,6 +47,22 @@ export default {
 			list: []
 		};
 	},
+  onLoad() {
+    ajax({
+    	url: api.getProject,
+    	type: 'GET',
+    	data: {
+    		page_size: 10,
+    		page: 1
+    	}
+    }).then(res => {
+      console.log(res)
+      if (res.status_code == 'ok') {
+        this.list = res.data.data || [];
+        // cb(list);
+      }
+    });
+  },
 	onShow() {
 		this.canReset && this.mescroll && this.mescroll.resetUpScroll();
 		this.canReset = true; // 过滤第一次的onShow事件,避免初始化界面时重复触发upCallback
@@ -59,21 +75,45 @@ export default {
 				this.list = this.list.concat(curPageData);
 			});
 		},
-		getList(mescroll, cb) {
-			ajax({
-				url: api.getProject,
-				type: 'GET',
-				data: {
-					page_size: 10,
-					page: mescroll.num
-				}
-			}).then(res => {
-        if (res.status_code == 'ok') {
-          var list = res.data.data || [];
-          cb(list);
-        }
-			});
-		},
+		// getList(mescroll, cb) {
+		// 	ajax({
+		// 		url: api.getProject,
+		// 		type: 'GET',
+		// 		data: {
+		// 			page_size: 10,
+		// 			page: mescroll.num
+		// 		}
+		// 	}).then(res => {
+  //       if (res.status_code == 'ok') {
+  //         var list = res.data.data || [];
+  //         cb(list);
+  //       }
+		// 	});
+		// },
+    getList(mescroll, cb) {
+    	ajax({
+    		url: api.getProject,
+    		type: 'GET',
+    		data: {
+    			page_size: 10,
+    			page: mescroll.num
+    		}
+    	}).then(res => {
+    		if(res.status_code == "ok"){
+          let dataList = res.data.data || []
+          for (let i = 0; i < dataList.length; i++) {
+            dataList[i].image = dataList[i].image.split(',')
+          }
+    			var list = dataList || [];
+    			cb(list);
+    		} else if(res.status_code == "error") {
+    		  if(res.message == '暂无信息'){
+    		  	this.list = []
+    		  	this.mescroll.endByPage(0, 0);
+    			}
+    		}
+    	});
+    },
 		post(e) {
 			uni.navigateTo({
 				url: '../postProject/postProject'

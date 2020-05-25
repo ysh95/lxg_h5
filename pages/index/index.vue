@@ -3,13 +3,13 @@
 	<view class="content">
     
 		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption">
-			<navigator class="search-wrap" hover-class="none" url="/pages/search/search">
+			<!-- <navigator class="search-wrap" hover-class="none" url="/pages/search/search">
 				<text>心疼你给你客户</text>
 				<view class="search-box">
 					<image src="/static/img/img4.png"></image>
 					<input type="text" placeholder="请输入搜索内容" disabled placeholder-class="search-placeholder">
 				</view>
-			</navigator>
+			</navigator> -->
 			<!-- banner轮播 -->
 			<swiper class="swiper-one" indicator-dots autoplay interval="3000" circular duration="1000" indicator-active-color="#F7F7F7">
 				<swiper-item v-for="(item, index) in bannerArr" :key="index">

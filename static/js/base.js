@@ -33,7 +33,7 @@ class Base {
       header: e.header || {
         'content-type': 'application/x-www-form-urlencoded',
         // Authorization: token || ''
-        Authorization: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC94dG4uYmVhY29ud2F5LmNuXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNTkwMzkwMDcwLCJleHAiOjE1OTA2MDYwNzAsIm5iZiI6MTU5MDM5MDA3MCwianRpIjoiNmJ2anZUSGhDZHI5ckJTeCIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.Mik0Od81HercPrL9I_2DokBrwkbj42zyR_4bbrR-Wo0'
+        Authorization: "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC94dG4uYmVhY29ud2F5LmNuXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNTkwMzkyOTgwLCJleHAiOjE1OTA5OTc3ODAsIm5iZiI6MTU5MDM5Mjk4MCwianRpIjoiSWZYY1VWRXJzb1VINnVKUCIsInN1YiI6MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.nefGS5N3IlR3nogBN9e0wKGQZ85XZOBj3Tp3VbRlz74"
       },
       method: e.type || "POST",
       dataType: e.dataType || "json",
