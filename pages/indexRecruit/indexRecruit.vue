@@ -1,8 +1,8 @@
 <template>
 	<view class="indexRecruit">
-		<view class="searsh">
+		<view class="searsh" @tap="goSearch">
 			<image src="../../static/img/img4.png" mode=""></image>
-			<input type="text" value="" placeholder="请输入搜索内容" />
+			<input type="text" value="" disabled="disabled" placeholder="请输入搜索内容" />
 		</view>
 		<view class="tab">
 			<text :class="0 == currentIndex ? 'title-sel' : ''" @tap="tab(0)">招聘</text>
@@ -22,7 +22,7 @@
 							<view class="top">
 								<text>{{ item.post_name }}</text>
 								<text v-if="currentIndex == 0">{{ item.post_salary }}</text>
-								<text v-else>{{ item.salary }}</text>
+								<text v-else>{{ item.salary }}元</text>
 							</view>
 							<view class="center">
 								<text>{{ item.name }}</text>
@@ -102,8 +102,9 @@ export default {
 					var list = res.data.data || [];
 					cb(list);
 				} else if(res.status_code == "error") {
+          var list = [];
+          cb(list);
 				  if(res.message == '暂无信息'){
-				  	this.list = []
 				  	this.mescroll.endByPage(0, 0);
 					}
 				}
@@ -120,6 +121,12 @@ export default {
 				});
 			}
 		},
+    // 进入搜索
+    goSearch() {
+      uni.navigateTo({
+      	url: `../indexRecruit/indexRecruitSearch`
+      });
+    },
 		getDetail(id) {
 			if (this.currentIndex == 0) {
 				uni.navigateTo({

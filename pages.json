@@ -12,6 +12,12 @@
 				"navigationBarTitleText": "招聘/兼职"
 			}
 		},
+    {
+    	"path": "pages/indexRecruit/indexRecruitSearch",
+    	"style": {
+    		"navigationBarTitleText": "招聘/兼职搜索"
+    	}
+    },
 		{
 			"path": "pages/makeFriends/makeFriends",
 			"style": {

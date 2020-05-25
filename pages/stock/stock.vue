@@ -1,8 +1,8 @@
 <template>
 	<view class="investor">
-    <view class="notList" v-if="list.length == 0">
+    <!-- <view class="notList" v-if="list.length == 0">
       {{upOption.empty.tip}}
-    </view>
+    </view> -->
 		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="0upx">
 			<view class="content">
 				<block v-for="(item, index) in list" :key="index">
@@ -74,6 +74,9 @@ export default {
 			}).then(res => {
         if (res.status_code == 'ok') {
           var list = res.data.data || [];
+          cb(list);
+        } else {
+          var list = [];
           cb(list);
         }
 			});

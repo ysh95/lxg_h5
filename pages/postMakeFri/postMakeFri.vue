@@ -100,7 +100,7 @@
 				<textarea class="textarea" value="" data-name='standard' @input="inputValue" placeholder="请填写择偶标准，请用：隔开，例如：是否买房" placeholder-class="placeholderSty"/>
 			</view>
 			<view class="item">
-				<label>上传照片</label>
+				<label>上传相册</label>
 				<view class="imgList">
 					<image :src="IMG_URL+item" v-for="(item,index) in formNode.album" mode=""></image>
 					<image src="../../static/img/img3.png" mode="" v-if="formNode.album.length<6" @tap="uploadImg()"></image>

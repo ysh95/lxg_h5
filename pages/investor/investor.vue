@@ -1,8 +1,5 @@
 <template>
 	<view class="investor">
-    <view class="notList" v-if="list.length == 0">
-      {{upOption.empty.tip}}
-    </view>
 		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" bottom='60upx'>
 			<view class="content">
 				<block v-for="(item,index) in list" :key='index'>
@@ -72,8 +69,9 @@ export default {
 					var list = res.data.data || [];
 					cb(list);
 				} else if(res.status_code == "error") {
+          var list = [];
+          cb(list);
 				  if(res.message == '暂无信息'){
-				  	this.list = []
 				  	this.mescroll.endByPage(0, 0);
 					}
 				}

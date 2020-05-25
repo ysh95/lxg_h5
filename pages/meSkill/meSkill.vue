@@ -96,8 +96,10 @@ export default {
 				 var list = res.data.data || [];
 				 cb(list);
 				} else if(res.status_code == "error") {
+          var list = [];
+          cb(list);
 				  if(res.message == '暂无信息'){
-				  	this.list = []
+				  	
 				  	this.mescroll.endByPage(0, 0);
 					}
 				}
