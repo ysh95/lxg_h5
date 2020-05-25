@@ -18,6 +18,12 @@
 				"navigationBarTitleText": "相亲/交友"
 			}
 		},
+    {
+    	"path": "pages/makeFriends/makeFriendsSearch",
+    	"style": {
+    		"navigationBarTitleText": "相亲/交友搜索"
+    	}
+    },
 		{
 			"path": "pages/meSkill/meSkill",
 			"style": {

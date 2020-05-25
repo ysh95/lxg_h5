@@ -2,30 +2,36 @@
 	<view class="indexRecruit">
 		<view class="searsh">
 			<image src="../../static/img/img4.png" mode=""></image>
-			<input type="text" value="" placeholder="请输入搜索内容" @input="searchList" />
+			<input type="text" value="" placeholder="请输入搜索内容" />
+		</view>
+		<view class="tab">
+			<text :class="0 == currentIndex ? 'title-sel' : ''" @tap="tab(0)">男</text>
+			<text :class="1 == currentIndex ? 'title-sel' : ''" @tap="tab(1)">女</text>
 		</view>
 		<view class="line"></view>
-		<view class="content">
-			<block v-for="(item, index) in list" :key="index">
-				<view class="item" @tap="go(item.id)">
-					<image :src="IMG_URL+item.avatar" mode=""></image>
-					<view class="rigth">
-						<view class="top">
-							<text>{{ item.name }}</text>
-							<text>{{ item.age }}</text>
-						</view>
-						<view class="center">
-							<text>{{ item.signature }}</text>
-						</view>
-						<view class="bottom">
-							<text>{{ item.address }}</text>
-							<!-- <text>{{ item.tip }}</text> -->
+		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="140upx">
+			<view class="content">
+				<block v-for="(item, index) in list" :key="index">
+					<view class="item" @tap="go(item.id)">
+						<image :src="IMG_URL+item.avatar" mode=""></image>
+						<view class="rigth">
+							<view class="top">
+								<text>{{ item.name }}</text>
+								<text>{{ item.age }}</text>
+							</view>
+							<view class="center">
+								<text>{{ item.signature }}</text>
+							</view>
+							<view class="bottom">
+								<text>{{ item.address }}</text>
+								<!-- <text>{{ item.tip }}</text> -->
+							</view>
 						</view>
 					</view>
-				</view>
-			</block>
-		</view>
-		<!-- <view class="btn" @tap="post(0)">发布相亲/交友信息</view> -->
+				</block>
+			</view>
+		</mescroll-uni>
+		<view class="btn" @tap="post(0)">发布相亲/交友信息</view>
 	</view>
 </template>
 
@@ -47,33 +53,49 @@ export default {
 		};
 	},
 	onShow() {
+		this.gender = 1;
+		this.canReset && this.mescroll && this.mescroll.resetUpScroll();
+		this.canReset = true; // 过滤第一次的onShow事件,避免初始化界面时重复触发upCallback
 	},
 	methods: {
-		searchList(e) {
-		  this.list = []
-		  this.pageNnm = 1
-		  this.key = e.detail.value
-		  this.getList()
+		tab(e) {
+			if (this.currentIndex != e) {
+				// this.navIdx = e
+				this.currentIndex = e;
+				this.list = []; // 在这里手动置空列表,可显示加载中的请求进度
+				this.mescroll.resetUpScroll(); // 刷新列表数据
+			}
 		},
-		getList() {
-		  if (this.key == '') {
-		    return false
-		  }
+		upCallback(mescroll) {
+			this.getList(mescroll, curPageData => {
+				mescroll.endSuccess(curPageData.length, false);
+				if (mescroll.num == 1) this.list = []; //如果是第一页需手动制空列表
+				this.list = this.list.concat(curPageData);
+			});
+		},
+		getList(mescroll, cb) {
+			if (this.currentIndex == 0) {
+				this.gender = 1;
+			} else {
+				this.gender = 2;
+			}
 			ajax({
-				url: `${api.URL}/api/blindDateSearch`,
-				type: 'POST',
+				url: api.getBlindDate,
+				type: 'GET',
 				data: {
-		      name: this.key,
 					page_size: 10,
-					page: this.pageNnm
+					page: mescroll.num,
+					gender: this.gender
 				}
 			}).then(res => {
 				if(res.status_code == "ok"){
-		      let dataList = res.data.data
-		      if (dataList.length > 0) {
-		        this.pageNnm += 1
-		        this.list = this.list.concat(dataList)
-		      }
+					var list = res.data.data || [];
+					cb(list);
+				} else if(res.status_code == "error") {
+				  if(res.message == '暂无信息'){
+				  	this.list = []
+				  	this.mescroll.endByPage(0, 0);
+					}
 				}
 			});
 		},
@@ -90,13 +112,10 @@ export default {
 		},
 		go(e) {
 			uni.navigateTo({
-				url: `../makeFriDetail/makeFriendsSearch`
+				url: `../makeFriDetail/makeFriDetail?id=${e}`
 			});
 		}
-	},
-  onReachBottom(){
-    this.getList()
-  }
+	}
 };
 </script>
 
