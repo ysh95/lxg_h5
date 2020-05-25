@@ -1,9 +1,9 @@
 <template>
 	<view class="indexRecruit">
-		<view class="searsh">
+	<!-- 	<view class="searsh">
 			<image src="../../static/img/img4.png" mode=""></image>
 			<input type="text" value="" placeholder="请输入搜索内容" />
-		</view>
+		</view> -->
 		<view class="tab">
 			<text :class="0 == currentIndex ? 'title-sel' : ''" @tap="tab(0)">公司</text>
 			<text :class="1 == currentIndex ? 'title-sel' : ''" @tap="tab(1)">个人</text>
@@ -92,8 +92,15 @@ export default {
 					page: mescroll.num
 				}
 			}).then(res => {
-				var list = res.data.data || [];
-				cb(list);
+				if (res.status_code == "ok") {
+				 var list = res.data.data || [];
+				 cb(list);
+				} else if(res.status_code == "error") {
+				  if(res.message == '暂无信息'){
+				  	this.list = []
+				  	this.mescroll.endByPage(0, 0);
+					}
+				}
 			});
 		},
 		post(e) {

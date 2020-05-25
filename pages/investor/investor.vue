@@ -1,6 +1,6 @@
 <template>
 	<view class="investor">
-		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption">
+		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" bottom='60upx'>
 			<view class="content">
 				<block v-for="(item,index) in list" :key='index'>
 					<view class="item" @tap="go(item.id)">
@@ -65,8 +65,15 @@ export default {
 					page: mescroll.num
 				}
 			}).then(res => {
-				var list = res.data.data || [];
-				cb(list);
+				if(res.status_code == "ok"){
+					var list = res.data.data || [];
+					cb(list);
+				} else if(res.status_code == "error") {
+				  if(res.message == '暂无信息'){
+				  	this.list = []
+				  	this.mescroll.endByPage(0, 0);
+					}
+				}
 			});
 		},
 		go(e) {
@@ -87,7 +94,7 @@ page{
 }
 .content{
 	margin-top: 20upx;
-	padding-bottom: 90upx;
+	// padding-bottom: 90upx;
 	.item{
 		width: 700upx;
 		padding: 26upx;

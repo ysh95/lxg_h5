@@ -52,7 +52,7 @@ export default {
 			upOption: {
 				textNoMore: '木有更多了', // 没有更多数据的提示文本
 				empty: {
-					tip: '~ 暂无订单内容 ~'
+					tip: '~ 暂无内容 ~'
 				}
 			},
 			list: []
@@ -93,8 +93,15 @@ export default {
 					page: mescroll.num
 				}
 			}).then(res => {
-				var list = res.data.data || [];
-				cb(list);
+				if(res.status_code == "ok"){
+					var list = res.data.data || [];
+					cb(list);
+				} else if(res.status_code == "error") {
+				  if(res.message == '暂无信息'){
+				  	this.list = []
+				  	this.mescroll.endByPage(0, 0);
+					}
+				}
 			});
 		},
 		post(e) {
