@@ -168,6 +168,12 @@
 				"navigationBarTitleText": "好项目招商加盟"
 			}
 		},
+    {
+    	"path": "pages/goodProject/goodProjectSearch",
+    	"style": {
+    		"navigationBarTitleText": "好项目招商加盟搜索"
+    	}
+    },
 		{
 			"path": "pages/goodProjectDetail/goodProjectDetail",
 			"style": {

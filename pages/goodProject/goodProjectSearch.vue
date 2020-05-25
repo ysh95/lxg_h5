@@ -2,31 +2,29 @@
 	<view class="indexRecruit">
 		<view class="searsh">
 			<image src="../../static/img/img4.png" mode=""></image>
-			<input type="text" value="" placeholder="请输入搜索内容" disabled="disabled" @tap="goSearch(1)"/>
+			<input type="text" placeholder="请输入搜索内容" @input="searchList"/>
 		</view>
     <view class="notList" v-if="list.length == 0">
       {{upOption.empty.tip}}
     </view>
-		<mescroll-uni v-if="list.length > 0" @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="36upx" bottom='30upx'>
-		<view class="content">
-			<block v-for="(item, index) in list" :key="index">
-				<view class="item" @tap="go(item.id)">
-					<image :src="IMG_URL+item.image" mode=""></image>
-					<view class="rigth">
-						<view class="top">
-							<text>{{ item.project_name }}</text>
-						</view>
-						<view class="center">{{item.summary}}</view>
-						<view class="bottom">
-							<text>{{ item.amount_of_money }}元</text>
-							<text>{{ item.apply_num }}人申请</text>
-						</view>
-					</view>
-				</view>
-			</block>
-		</view>
-		</mescroll-uni>
-		<view class="btn" @tap="post()">发布项目</view>
+    <view class="content">
+    	<block v-for="(item, index) in list" :key="index">
+    		<view class="item" @tap="go(item.id)">
+    			<image :src="IMG_URL+item.image" mode=""></image>
+    			<view class="rigth">
+    				<view class="top">
+    					<text>{{ item.project_name }}</text>
+    				</view>
+    				<view class="center">{{item.summary}}</view>
+    				<view class="bottom">
+    					<text>{{ item.amount_of_money }}元</text>
+    					<text>{{ item.apply_num }}人申请</text>
+    				</view>
+    			</view>
+    		</view>
+    	</block>
+    </view>
+		<!-- <view class="btn" @tap="post()">发布项目</view> -->
 		<!-- <view class="btn" v-else @tap="post(1)">发布求职信息</view> -->
 	</view>
 </template>
@@ -38,6 +36,7 @@ import { mapGetters } from 'vuex';
 export default {
 	data() {
 		return {
+      
 			upOption: {
 				textNoMore: '木有更多了', // 没有更多数据的提示文本
 				empty: {
@@ -48,66 +47,36 @@ export default {
 		};
 	},
   onLoad() {
-    ajax({
-    	url: api.getProject,
-    	type: 'GET',
-    	data: {
-    		page_size: 10,
-    		page: 1
-    	}
-    }).then(res => {
-      console.log(res)
-      if (res.status_code == 'ok') {
-        this.list = res.data.data || [];
-        // cb(list);
-      }
-    });
   },
 	onShow() {
-		this.canReset && this.mescroll && this.mescroll.resetUpScroll();
-		this.canReset = true; // 过滤第一次的onShow事件,避免初始化界面时重复触发upCallback
+    // this.list = []
 	},
 	methods: {
-		upCallback(mescroll) {
-			this.getList(mescroll, curPageData => {
-				mescroll.endSuccess(curPageData.length, false);
-				if (mescroll.num == 1) this.list = []; //如果是第一页需手动制空列表
-				this.list = this.list.concat(curPageData);
-			});
-		},
-		// getList(mescroll, cb) {
-		// 	ajax({
-		// 		url: api.getProject,
-		// 		type: 'GET',
-		// 		data: {
-		// 			page_size: 10,
-		// 			page: mescroll.num
-		// 		}
-		// 	}).then(res => {
-  //       if (res.status_code == 'ok') {
-  //         var list = res.data.data || [];
-  //         cb(list);
-  //       }
-		// 	});
-		// },
-    getList(mescroll, cb) {
+    searchList(e) {
+      this.list = []
+      this.pageNnm = 1
+      this.key = e.detail.value
+      this.getList()
+    },
+    getList() {
+      if (this.key == '') {
+        return false
+      }
     	ajax({
-    		url: api.getProject,
-    		type: 'GET',
+    		url: `${api.URL}/api/projectSearch`,
+    		type: 'POST',
     		data: {
+          project_name: this.key,
     			page_size: 10,
-    			page: mescroll.num
+    			page: this.pageNnm
     		}
     	}).then(res => {
     		if(res.status_code == "ok"){
-          let dataList = res.data.data || []
-    			var list = dataList || [];
-    			cb(list);
-    		} else if(res.status_code == "error") {
-    		  if(res.message == '暂无信息'){
-    		  	this.list = []
-    		  	this.mescroll.endByPage(0, 0);
-    			}
+          let dataList = res.data.data
+          if (dataList.length > 0) {
+            this.pageNnm += 1
+            this.list = this.list.concat(dataList)
+          }
     		}
     	});
     },
@@ -120,13 +89,11 @@ export default {
 			uni.navigateTo({
 				url: `../goodProjectDetail/goodProjectDetail?id=${e}`
 			});
-		},
-		goSearch(e){
-			uni.navigateTo({
-				url:'../goodProject/goodProjectSearch'
-			})
 		}
-	}
+	},
+  onReachBottom(){
+    this.getList()
+  }
 };
 </script>
 
