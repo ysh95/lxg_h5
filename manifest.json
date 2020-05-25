@@ -74,6 +74,12 @@
     },
     "h5" : {
         "title" : "lxg_h5",
-        "domain" : "http://xtn.beaconway.cn"
+        "domain" : "http://xtn.beaconway.cn",
+        "router" : {
+            "mode" : "history"
+        },
+        "devServer" : {
+            "https" : false
+        }
     }
 }

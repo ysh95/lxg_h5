@@ -3,7 +3,7 @@
     <view class="notList" v-if="list.length == 0">
       {{upOption.empty.tip}}
     </view>
-		<mescroll-uni v-if="list.length > 0" @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="0upx">
+		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="0upx">
 		<view class="content">
 			<block v-for="(item,index) in list" :key='index'>
 				<view class="item" @tap="go(item.id)">

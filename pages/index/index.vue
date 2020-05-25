@@ -1,6 +1,7 @@
 
 <template>
 	<view class="content">
+    
 		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption">
 			<navigator class="search-wrap" hover-class="none" url="/pages/search/search">
 				<text>心疼你给你客户</text>
@@ -93,7 +94,7 @@
 			return {
 				URL: '',
 				IMG_URL: '',
-				
+				options: null,
 				bannerArr: [],
 				classifyArr: [],
 				demandArr: [],
@@ -108,21 +109,18 @@
 		},
 		onLoad(options) {
 			var that = this
+      that.options = options
 			that.URL = api.URL
 			that.IMG_URL = api.IMG_URL
-			// uni.getSetting({
-			// 	success(res) {
-			// 		if (res.authSetting['scope.userInfo']) {
-			// 			uni.getUserInfo({
-			// 				success(res) {
-			// 					that.setUserInfo(res.userInfo)
-			// 					// that.$store.commit('setUserInfo', res.userInfo)
-			// 					login()
-			// 				}
-			// 			})
-			// 		}
-			// 	}
-			// })
+      uni.getStorage({
+        key: 'token',
+        success: (res1) => {},
+        complete: (res1) => {
+          if(res1.data == '') {
+            // that.login()
+          }
+        }
+      });
 			// 首页banner请求
 			ajax({
 				url: api.index_banner,
@@ -175,6 +173,46 @@
 			getphonenumber(e) {
 				console.log(e)
 			},
+      login() {
+        const that = this
+        // console.log('=========================')
+        // console.log(that.options.hasOwnProperty('code'))
+        // return false
+        if (that.options.hasOwnProperty('code')) {
+          let code = that.options.code
+          ajax({
+          	url: `${that.URL}/api/auth/login`,
+          	type: "POST",
+            data: {
+              code: code
+            },
+          }).then(res => {
+            // console.log(res)
+            if (res.status_code == 'ok') {
+              let token = res.token_type + res.access_token
+              uni.setStorage({
+                key: 'token',
+                data: token
+              });
+            } else {
+              that.goWXLogin()
+            }
+          })
+        } else {
+          that.goWXLogin()
+        }
+        
+      },
+      goWXLogin() {
+        ajax({
+        	url: `${this.URL}/api/auth/getParam`,
+        	type: "GET"
+        }).then(res => {
+          // console.clear()
+          // console.log(decodeURIComponent(res))
+          window.location.href = decodeURIComponent(res)
+        })
+      },
 			...mapMutations(['setUserInfo']),
 			getUserInfo(e) {
 				if (e.detail.errMsg == 'getUserInfo:ok') {
@@ -201,8 +239,8 @@
 						page: mescroll.num,
 					}
 				}).then(res => {
-          console.clear()
-					console.log(res)
+     //      console.clear()
+					// console.log(res)
           if (res.status_code == 'ok') {
             // var purchasesList = res.data
             var purchasesList = res.data.data || []

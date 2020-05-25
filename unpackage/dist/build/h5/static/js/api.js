@@ -79,6 +79,8 @@ module.exports = {
 	getSupplierInfo: URL + '/api/getSupplierInfo',
 	// 获取联系方式
 	getSupplierDetails: URL + '/api/getSupplierDetails',
+	// 招商搜索
+	projectSearch: URL + '/api/projectSearch',
 	
 	// 求购分类推荐入口
 	home_push: URL + '/api/getTopNavigationBars',

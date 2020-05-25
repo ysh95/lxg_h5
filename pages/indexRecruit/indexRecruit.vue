@@ -9,8 +9,11 @@
 			<text :class="1 == currentIndex ? 'title-sel' : ''" @tap="tab(1)">求职</text>
 		</view>
 		<view class="line"></view>
+    <view class="notList" v-if="list.length == 0">
+      {{upOption.empty.tip}}
+    </view>
 		<mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption" top="140upx">
-			<view class="content">
+			<view class="content" v-if="list.length > 0">
 				<block v-for="(item, index) in list" :key="index">
 					<view class="item" @tap="getDetail(item.id)">
 						<image v-if="currentIndex == 0" :src="IMG_URL + item.logo" mode=""></image>
@@ -93,6 +96,8 @@ export default {
 					page: mescroll.num
 				}
 			}).then(res => {
+        console.clear()
+        console.log(res)
 				if(res.status_code == "ok"){
 					var list = res.data.data || [];
 					cb(list);
