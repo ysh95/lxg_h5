@@ -71,5 +71,9 @@
     },
     "mp-toutiao" : {
         "usingComponents" : true
+    },
+    "h5" : {
+        "title" : "lxg_h5",
+        "domain" : "http://xtn.beaconway.cn"
     }
 }

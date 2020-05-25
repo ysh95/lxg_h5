@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "我有技能",
+  "usingComponents": {
+    "mescroll-uni": "/components/mescroll-uni/mescroll-uni"
+  }
+}

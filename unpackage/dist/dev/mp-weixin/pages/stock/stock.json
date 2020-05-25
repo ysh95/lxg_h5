@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "找股权投资",
+  "usingComponents": {
+    "mescroll-uni": "/components/mescroll-uni/mescroll-uni"
+  }
+}

@@ -18,15 +18,10 @@
 				<input type="number" value="" data-name="price" @input="getSetData" placeholder="请填写价格" placeholder-class="placeholderSty" />
 			</view>
       <view class="item">
-<<<<<<< HEAD
       	<label>行 业 分 类</label>
-      	<input type="text" value="" data-name="classify" @input="getSetData" placeholder="请填写行业分类" placeholder-class="placeholderSty" />
-=======
-      	<label>行业分类</label>
         <picker @change="selClassify" :value="classifyIndex" :range="classify">
           <input type="text" :value="classify[classifyIndex]" placeholder="请选择行业分类" placeholder-class="placeholderSty" disabled="false" />
         </picker>
->>>>>>> fe416578cabb9de5b046f9bcad9416447d2ad052
       </view>
 		</view>
 		<view class="form">

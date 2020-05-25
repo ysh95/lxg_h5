@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "股权/投资详情",
+  "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup"
+  }
+}

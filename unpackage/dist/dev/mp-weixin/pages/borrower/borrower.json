@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "找借款人",
+  "usingComponents": {
+    "mescroll-uni": "/components/mescroll-uni/mescroll-uni"
+  }
+}

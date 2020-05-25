@@ -197,11 +197,12 @@
 					url: api.home_news,
 					type: "GET",
 					data: {
-						number: 10,
+						page_size: 10,
 						page: mescroll.num,
 					}
 				}).then(res => {
 					console.log(res)
+          // var purchasesList = res.data
 					var purchasesList = res.data.data || []
 					// purchasesList.forEach(item => {
 					// 	item.time = formatDate(item.ctime)

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "找供货商",
+  "usingComponents": {
+    "mescroll-uni": "/components/mescroll-uni/mescroll-uni"
+  }
+}

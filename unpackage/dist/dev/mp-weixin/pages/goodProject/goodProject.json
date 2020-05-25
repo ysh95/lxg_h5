@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "好项目招商加盟",
+  "usingComponents": {
+    "mescroll-uni": "/components/mescroll-uni/mescroll-uni"
+  }
+}
