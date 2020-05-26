@@ -41,7 +41,7 @@
 				<label>图 片 上 传</label>
 				<view class="imgList">
 					<image :src="item" mode="" v-for="(item, index) in imagesShow" :key="index"></image>
-					<image src="../../static/img/img3.png" mode="" @tap="uploadImg" v-if="images.length < 9"></image>
+					<image src="../../static/img/img3.png" mode="" @tap="uploadImg" v-if="images.length <= 0"></image>
 				</view>
 			</view>
 		</view>
@@ -120,7 +120,7 @@ export default {
 			const that = this;
 			let count = 9 - that.images.length;
 			wx.chooseImage({
-				count: count,
+				count: 1,
 				sizeType: ['original', 'compressed'],
 				sourceType: ['album', 'camera'],
 				success: res => {

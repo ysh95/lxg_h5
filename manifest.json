@@ -73,7 +73,7 @@
         "usingComponents" : true
     },
     "h5" : {
-        "title" : "lxg_h5",
+        "title" : "理想国",
         "domain" : "http://xtn.beaconway.cn",
         "router" : {
             "mode" : "history"

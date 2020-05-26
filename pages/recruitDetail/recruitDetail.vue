@@ -4,7 +4,7 @@
 			<view class="info">
 				<text class="title">{{info.post_name}}</text>
 				<text class="center">{{info.post_address}} | {{info.post_experience}}  | {{info.post_education}} </text>
-				<text class="money">{{info.post_salary}}</text>
+				<text class="money">{{info.post_salary}}元</text>
 			</view>
 			<view class="item">
 				<image :src="info.hr_avatar" mode=""></image>
